@@ -2,6 +2,8 @@ Strict
 Import mojo
 Import flixel
 Import flixel.plugin.photonstorm
+Import "../assets/sprites/red_ball.png"
+Import "../assets/sprites/green_ball.png"
 
 'import tests.TestsHeader;
 Function Main:Int()
@@ -12,26 +14,31 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, VelocityTest3.ClassObject, 1, 60, 60)
+		Super.New(640, 480, VelocityTest2.ClassObject, 1, 60, 60)
 		FlxG.VisualDebug = True
 	End Method
+	
+	Method OnContentInit:Void()
+		FlxAssetsManager.AddImage("red_ball", "red_ball.png")
+		FlxAssetsManager.AddImage("green_ball", "green_ball.png")
+	End Method	
 
 End Class
 
-Class VelocityTest3Class Implements FlxClass
+Class VelocityTest2Class Implements FlxClass
 
 	Method CreateInstance:Object()
-		Return New VelocityTest3()
+		Return New VelocityTest2()
 	End Method
 	
 	Method InstanceOf:Bool(object:Object)
-		Return (VelocityTest3(object) <> Null)
+		Return (VelocityTest2(object) <> Null)
 	End Method
 
 End Class
 
-Class VelocityTest3 Extends FlxState
-Global ClassObject:FlxClass = new VelocityTest3Class()
+Class VelocityTest2 Extends FlxState
+Global ClassObject:FlxClass = new VelocityTest2Class()
 	'//	Test specific variables
 Private 
 	
@@ -52,10 +59,8 @@ Public
 		
 		'//	Test specific
 			
-		'red = New FlxSprite(160, 120, "..\assets\sprites\red_ball.png")
-		'green = New FlxSprite(-32, 0, "../assets/sprites/green_ball.png")
-		red = New FlxSprite(160, 120)
-		green = New FlxSprite(-32, 0)
+		red = New FlxSprite(160, 120, "red_ball")
+		green = New FlxSprite(-32, 0, "green_ball")
 			
 		Add(red)
 		Add(green)	
@@ -68,8 +73,10 @@ Public
 		Super.Update()
 		green.x = FlxG.Mouse.screenX
 		green.y = FlxG.Mouse.screenY
+			
+		Local a:Float = FptFlxVelocity.AngleBetween(red, green)
 		
-		FlxG.Log("Distance between red and green: " + FptFlxVelocity.DistanceBetween(red, green) + " px" )
+		FlxG.Log("Angle between red and green: " + Int(FptFlxMath.AsDegrees(a))	)
 		'header.instructions.text = "Angle between red and green: " + Math.round(FlxMath.asDegrees(a));
 	End Method
 End Class

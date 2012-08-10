@@ -59,7 +59,6 @@ Public
 	Method Update:Void()
 		'//	Draw a randomly coloured box onto the canvas
 		Local rect:FlxSprite = New FlxSprite(FptFlxMath.Rand(32, 580), FptFlxMath.Rand(32, 380)).MakeGraphic(16, 16, FptFlxColor.GetRandomColor(20))
-		'canvas.Pixels = canvas.Pixels & rect.Pixels
 		Add(rect)
 
 		Super.Update()

@@ -66,6 +66,8 @@ Public
 		'add(header.overlay);
 	End Method
 	
+	Method _DrawSurface:
+	
 	Method Update:Void()
 
 		Super.Update()
