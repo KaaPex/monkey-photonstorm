@@ -19,6 +19,8 @@ FptFlxMath (partially ported)
 
 FptFlxVelocity
 
+FptFlxWeapon (partially ported)
+
 Requirements
 ------------
 
