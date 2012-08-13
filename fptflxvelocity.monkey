@@ -178,7 +178,7 @@ Class FptFlxVelocity
 	Function DistanceBetween:Int(a:FlxSprite, b:FlxSprite)
 		Local dx:Float = (a.x + a.origin.x) - (b.x + b.origin.x)
 		Local dy:Float = (a.y + a.origin.y) - (b.y + b.origin.y)
-		
+	
 		Return Int(FptFlxMath.VectorLength(dx, dy))
 	End Function
 		
@@ -192,8 +192,8 @@ Class FptFlxVelocity
 	Function DistanceToPoint:Int(a:FlxSprite, target:FlxPoint)
 		Local dx:Float = (a.x + a.origin.x) - (target.x)
 		Local dy:Float = (a.y + a.origin.y) - (target.y)
-		
-		Return Int(FlxMath.VectorLength(dx, dy))
+
+		Return Int(FptFlxMath.VectorLength(dx, dy))
 	End Function
 		
 	'/**
@@ -224,7 +224,7 @@ Class FptFlxVelocity
 		Local dy:Float = (target.y) - (a.y + a.origin.y)
 		
 		If (asDegrees) Then
-			Return FptFlxMath.asDegrees(ATan2r(dy, dx))
+			Return FptFlxMath.AsDegrees(ATan2r(dy, dx))
 		Else
 			Return ATan2r(dy, dx)
 		Endif
@@ -279,13 +279,13 @@ Class FptFlxVelocity
 	Function VelocityFromFacing:FlxPoint(parent:FlxSprite, speed:Int)
 		Local a:Float
 		
-		If (parent.facing = FlxObject.LEFT) Then
+		If (parent.Facing = FlxObject.LEFT) Then
 			a = 180
-		Else If (parent.facing = FlxObject.RIGHT) Then
+		Else If (parent.Facing = FlxObject.RIGHT) Then
 			a = 0
-		Else If (parent.facing = FlxObject.UP) Then
+		Else If (parent.Facing = FlxObject.UP) Then
 			a = -90
-		Else If (parent.facing = FlxObject.DOWN) Then
+		Else If (parent.Facing = FlxObject.DOWN) Then
 			a = 90
 		Endif
 		
@@ -314,9 +314,9 @@ Class FptFlxVelocity
 		Local dy:Float = FlxG.Mouse.screenY - p.y
 			
 		If (asDegrees) Then
-			Return FptFlxMath.AsDegrees(Atan2r(dy, dx))
+			Return FptFlxMath.AsDegrees(ATan2r(dy, dx))
 		Else
-			Return Atan2r(dy, dx)
+			Return ATan2r(dy, dx)
 		Endif
 	End Function
         

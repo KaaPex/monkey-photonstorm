@@ -1,3 +1,4 @@
 Import fptflxcolor
 Import fptflxmath
 Import fptflxvelocity
+Import fptflxweapon

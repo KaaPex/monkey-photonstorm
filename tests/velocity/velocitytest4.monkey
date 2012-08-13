@@ -5,6 +5,7 @@ Import flixel.plugin.photonstorm
 Import "../assets/sprites/red_ball.png"
 Import "../assets/sprites/green_ball.png"
 Import "../assets/sprites/blue_ball.png"
+#REFLECTION_FILTER="velo*|flixel*"
 
 'import tests.TestsHeader;
 Function Main:Int()
@@ -15,7 +16,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, VelocityTest4.ClassObject, 1, 60, 60)
+		Super.New(640, 480, GetClass("VelocityTest4"), 1, 60, 60)
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -27,20 +28,7 @@ Class Objects Extends FlxGame
 
 End Class
 
-Class VelocityTest4Class Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New VelocityTest4()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (VelocityTest4(object) <> Null)
-	End Method
-
-End Class
-
 Class VelocityTest4 Extends FlxState
-Global ClassObject:FlxClass = new VelocityTest4Class()
 	'//	Test specific variables
 Private 
 	

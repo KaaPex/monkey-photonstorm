@@ -15,6 +15,8 @@
 '*/
 Import monkey.math
 Import monkey.list
+Import flixel.flxrect
+Import flixel.flxg
 
 Class FptFlxMath
 
@@ -26,145 +28,119 @@ Private
 	 Field _mr:Int = 0
 	 Field _cosTable:Float[]
 	 Field _sinTable:Float[]
-	 Const coefficient1:Number = PI / 4
+	 Const coefficient1:Float = PI / 4
 Public	 
-#rem
-	
-	Private static var 
-	
-	private static var ;
-	private static const RADTODEG:Number = 180 / Math.PI;
-	private static const DEGTORAD:Number = Math.PI / 180;
-	
-	public function FlxMath() 
-	{
-	}
-	
-	/**
-	 * Returns true if the given x/y coordinate is within the given rectangular block
-	 * 
-	 * @param	pointX		The X value to test
-	 * @param	pointY		The Y value to test
-	 * @param	rectX		The X value of the region to test within
-	 * @param	rectY		The Y value of the region to test within
-	 * @param	rectWidth	The width of the region to test within
-	 * @param	rectHeight	The height of the region to test within
-	 * 
-	 * @return	true if pointX/pointY is within the region, otherwise false
-	 */
-	public static function pointInCoordinates(pointX:int, pointY:int, rectX:int, rectY:int, rectWidth:int, rectHeight:int):Boolean
-	{
-		if (pointX >= rectX && pointX <= (rectX + rectWidth))
-		{
-			if (pointY >= rectY && pointY <= (rectY + rectHeight))
-			{
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * Returns true if the given x/y coordinate is within the given rectangular block
-	 * 
-	 * @param	pointX		The X value to test
-	 * @param	pointY		The Y value to test
-	 * @param	rect		The FlxRect to test within
-	 * @return	true if pointX/pointY is within the FlxRect, otherwise false
-	 */
-	public static function pointInFlxRect(pointX:int, pointY:int, rect:FlxRect):Boolean
-	{
-		if (pointX >= rect.x && pointX <= rect.right && pointY >= rect.y && pointY <= rect.bottom)
-		{
-			return true;
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * Returns true if the mouse world x/y coordinate are within the given rectangular block
-	 * 
-	 * @param	useWorldCoords	If true the world x/y coordinates of the mouse will be used, otherwise screen x/y
-	 * @param	rect			The FlxRect to test within. If this is null for any reason this function always returns true.
-	 * 
-	 * @return	true if mouse is within the FlxRect, otherwise false
-	 */
-	public static function mouseInFlxRect(useWorldCoords:Boolean, rect:FlxRect):Boolean
-	{
-		if (rect == null)
-		{
-			return true;
-		}
-		
-		if (useWorldCoords)
-		{
-			return pointInFlxRect(FlxG.mouse.x, FlxG.mouse.y, rect);
-		}
-		else
-		{
-			return pointInFlxRect(FlxG.mouse.screenX, FlxG.mouse.screenY, rect);
-		}
-	}
-	
-	/**
-	 * Returns true if the given x/y coordinate is within the Rectangle
-	 * 
-	 * @param	pointX		The X value to test
-	 * @param	pointY		The Y value to test
-	 * @param	rect		The Rectangle to test within
-	 * @return	true if pointX/pointY is within the Rectangle, otherwise false
-	 */
-	public static function pointInRectangle(pointX:int, pointY:int, rect:Rectangle):Boolean
-	{
-		if (pointX >= rect.x && pointX <= rect.right && pointY >= rect.y && pointY <= rect.bottom)
-		{
-			return true;
-		}
-		
-		return false;
-	}
-	
-	/**
-	 * A faster (but much less accurate) version of Math.atan2(). For close range / loose comparisons this works very well, 
-	 * but avoid for long-distance or high accuracy simulations.
-	 * Based on: http://blog.gamingyourway.com/PermaLink,guid,78341247-3344-4a7a-acb2-c742742edbb1.aspx
-	 * <p>
-	 * Computes and returns the angle of the point y/x in radians, when measured counterclockwise from a circle's x axis 
-	 * (where 0,0 represents the center of the circle). The return value is between positive pi and negative pi. 
-	 * Note that the first parameter to atan2 is always the y coordinate.
-	 * </p>
-	 * @param y The y coordinate of the point
-	 * @param x The x coordinate of the point
-	 * @return The angle of the point x/y in radians
-	 */
-	public static function atan2(y:Number, x:Number):Number
-	{
-		var absY:Number = y;
-		var coefficient2:Number = 3 * coefficient1;
-		var r:Number;
-		var angle:Number;
-		
-		if (absY < 0)
-		{
-			absY = -absY;
-		}
 
-		if (x >= 0)
-		{
-			r = (x - absY) / (x + absY);
-			angle = coefficient1 - coefficient1 * r;
-		}
-		else
-		{
-			r = (x + absY) / (absY - x);
-			angle = coefficient2 - coefficient1 * r;
-		}
+	'/**
+	 '* Returns true if the given x/y coordinate is within the given rectangular block
+	 '* 
+	 '* @param	pointX		The X value to test
+	 '* @param	pointY		The Y value to test
+	 '* @param	rectX		The X value of the region to test within
+	 '* @param	rectY		The Y value of the region to test within
+	 '* @param	rectWidth	The width of the region to test within
+	 '* @param	rectHeight	The height of the region to test within
+	 '* 
+	 '* @return	true if pointX/pointY is within the region, otherwise false
+	 '*/
+	Function PointInCoordinates:Bool(pointX:Int, pointY:Int, rectX:Int, rectY:Int, rectWidth:Int, rectHeight:Int)
+		If (pointX >= rectX And pointX <= (rectX + rectWidth)) Then
+			If (pointY >= rectY And pointY <= (rectY + rectHeight)) Then
+				Return True
+			Endif
+		Endif
+		
+		Return False
+	End Function
+	
+	'/**
+	 '* Returns true if the given x/y coordinate is within the given rectangular block
+	 '* 
+	 '* @param	pointX		The X value to test
+	 '* @param	pointY		The Y value to test
+	 '* @param	rect		The FlxRect to test within
+	 '* @return	true if pointX/pointY is within the FlxRect, otherwise false
+	 '*/
+	Function PointInFlxRect:Bool(pointX:Int, pointY:Int, rect:FlxRect)
+		If (pointX >= rect.x And pointX <= rect.Right And pointY >= rect.y And pointY <= rect.Bottom)
+			Return True
+		Endif
+		
+		Return False
+	End Function
+	
+	'/**
+	 '* Returns true if the mouse world x/y coordinate are within the given rectangular block
+	 '* 
+	 '* @param	useWorldCoords	If true the world x/y coordinates of the mouse will be used, otherwise screen x/y
+	 '* @param	rect			The FlxRect to test within. If this is null for any reason this function always returns true.
+	 '* 
+	 '* @return	true if mouse is within the FlxRect, otherwise false
+	 '*/
+	Function MouseInFlxRect:Bool(useWorldCoords:Bool, rect:FlxRect)
+		If (rect = Null) Then
+			Return True
+		Endif
+		
+		If (useWorldCoords) Then
+			Return PointInFlxRect(FlxG.Mouse.x, FlxG.Mouse.y, rect)
+		Else
+			Return PointInFlxRect(FlxG.Mouse.screenX, FlxG.Mouse.screenY, rect)
+		Endif
+	End Function
+	
+	'/**
+	 '* Returns True If the given x/y coordinate is within the Rectangle
+	 '* 
+	 '* @param	pointX		The X value to test
+	 '* @param	pointY		The Y value to test
+	 '* @param	rect		The Rectangle to test within
+	 '* @return	true if pointX/pointY is within the Rectangle, otherwise false
+	 '*/
+	'Function PointInRectangle:Bool(pointX:Int, pointY:Int, rect:Rectangle)
+	'{
+	'	If (pointX >= rect.x && pointX <= rect.right && pointY >= rect.y && pointY <= rect.bottom)
+	'	{
+	'		Return True;
+	'	}
+	'	
+	'	Return False;
+	'}
+	
+	'/**
+	 '* A faster (but much less accurate) version of Math.atan2(). For close range / loose comparisons this works very well, 
+	 '* but avoid for long-distance or high accuracy simulations.
+	 '* Based on: http://blog.gamingyourway.com/PermaLink,guid,78341247-3344-4a7a-acb2-c742742edbb1.aspx
+	 '* <p>
+	 '* Computes and returns the angle of the point y/x in radians, when measured counterclockwise from a circle's x axis 
+	 '* (where 0,0 represents the center of the circle). The return value is between positive pi and negative pi. 
+	 '* Note that the first parameter to atan2 is always the y coordinate.
+	 '* </p>
+	 '* @param y The y coordinate of the point
+	 '* @param x The x coordinate of the point
+	 '* @return The angle of the point x/y in radians
+	 '*/
+	Function Atan2:Float(y:Float, x:Float)
+		Local absY:Float = Abs(y)
+		Local coefficient2:Float = 3 * coefficient1
+		Local r:Float
+		Local angle:Float		
+
+		If (x >= 0) Then
+			r = (x - absY) / (x + absY)
+			angle = coefficient1 - coefficient1 * r
+		Else
+			r = (x + absY) / (absY - x)
+			angle = coefficient2 - coefficient1 * r
+		Endif
     
-		return y < 0 ? -angle : angle;
-	}
-#End	
+    	If ( y < 0 ) Then
+    		Return -angle
+    	Else	
+			Return angle
+		Endif	
+	End Function
+	
 	'/**
 	 '* Generate a sine and cosine table simultaneously and extremely quickly. Based on research by Franky of scene.at
 	 '* <p>
@@ -185,8 +161,8 @@ Public
 		Local cos:Float = cosAmplitude;
 		Local frq:Float = frequency * PI / length
 		
-		_cosTable = New Float[]();
-		_sinTable = New Float[]();
+		_cosTable = New Float[length]
+		_sinTable = New Float[length]
 		
 		For Local c:Int = 0 Until length
 			cos -= sin * frq
@@ -226,11 +202,13 @@ Public
 	 '* @param val A number greater than or equal to 0
 	 '* @return If the parameter val is greater than or equal to zero, a number; otherwise NaN (not a number).
 	 '*/
+	 #rem
+	 '//TO-DO :)
 	Function Sqrt:Float(val:Float = 0)
 		
 		Local thresh:Float = 0.002
 		Local b:Float = val * 0.25
-		Local a:Float
+		Local a:Float = 0
 		Local c:Float
 		
 		If (val = 0) Then
@@ -241,12 +219,14 @@ Public
 			c = val / b
 			b = (b + c) * 0.5
 			a = b - c
-			If (a < 0) a = -a
-		wend
+			If (a < 0) Then
+				a = -a
+			Endif	
+		Wend
 		
 		Return b
 	End Function
-		
+		#end
 	'/**
 	 '* Generates a small random number between 0 and 65535 very quickly
 	 '* <p>

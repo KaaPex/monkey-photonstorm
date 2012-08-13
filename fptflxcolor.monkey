@@ -46,9 +46,9 @@ Class FptFlxColor
 	 '* @return 0xAARRGGBB format color value
 	 '*/
 	Function GetComplementHarmony:Int(color:Int)
-		Local hsv:Object = RGBtoHSV(color)
+		Local hsv:HSV = RGBtoHSV(color)
 		
-		Local opposite:Int = FlxMath.WrapValue(hsv.hue, 180, 359)
+		Local opposite:Int = FptFlxMath.WrapValue(hsv.hue, 180, 359)
 		
 		Return HSVtoRGB(opposite, 1.0, 1.0)
 	End Function
@@ -78,8 +78,8 @@ Class FptFlxColor
 		h.hue3 = FptFlxMath.WrapValue(hsv.hue, threshold, 359)
 		
 		h.color1 = color
-		h.color2 = HSVtoRGB(h.warmerhue, 1.0, 1.0)
-		h.color3 = HSVtoRGB(h.colderhue, 1.0, 1.0)
+		h.color2 = HSVtoRGB(h.hue2, 1.0, 1.0)
+		h.color3 = HSVtoRGB(h.hue3, 1.0, 1.0)
 		
 		Return h
 	End Function
@@ -102,18 +102,18 @@ Class FptFlxColor
 			Return Null
 		Endif
 		
-		Local opposite:Int = FlxMath.wrapValue(hsv.hue, 180, 359)
+		Local opposite:Int = FptFlxMath.WrapValue(hsv.hue, 180, 359)
 		
 		Local h:Harmony = New Harmony()
 		h.hue1 = hsv.hue
-		h.hue2 = FlxMath.wrapValue(hsv.hue, opposite - threshold, 359)
-		h.hue3 = FlxMath.wrapValue(hsv.hue, opposite + threshold, 359)
+		h.hue2 = FptFlxMath.WrapValue(hsv.hue, opposite - threshold, 359)
+		h.hue3 = FptFlxMath.WrapValue(hsv.hue, opposite + threshold, 359)
 		
 		h.color1 = color
-		h.color2 = HSVtoRGB(h.warmerhue, hsv.saturation, hsv.value)
-		h.color3 = HSVtoRGB(h.colderhue, hsv.saturation, hsv.value)
+		h.color2 = HSVtoRGB(h.hue2, hsv.saturation, hsv.value)
+		h.color3 = HSVtoRGB(h.hue3, hsv.saturation, hsv.value)
 		
-		FlxG.log("hue: " + hsv.hue + " opposite: " + opposite + " warmer: " + h.warmerhue + " colder: " + h.colderhue);
+		'FlxG.log("hue: " + hsv.hue + " opposite: " + opposite + " warmer: " + h.rhue + " colder: " + h.colderhue);
 		
 		Return h		
 	End Function
@@ -130,8 +130,8 @@ Class FptFlxColor
 	Function GetTriadicHarmony:Harmony(color:Int)
 		Local hsv:HSV = RGBtoHSV(color)
 		
-		Local triadic1:Int = FlxMath.wrapValue(hsv.hue, 120, 359)
-		Local triadic2:Int = FlxMath.wrapValue(triadic1, 120, 359)
+		Local triadic1:Int = FptFlxMath.WrapValue(hsv.hue, 120, 359)
+		Local triadic2:Int = FptFlxMath.WrapValue(triadic1, 120, 359)
 		
 		Local h:Harmony = New Harmony()
 		
@@ -153,16 +153,16 @@ Class FptFlxColor
 	 '*/
 	Function GetColorInfo:String(color:Int)
 		Local argb:FlxColor = FlxColor.ARGB(color)
-		Local hsl:HSL = RGBtoHSV(color)
+		Local hsl:HSV = RGBtoHSV(color)
 		
 		'//	Hex format
 		Local result:String = RGBtoHexString(color) + "\n"
 		
 		'//	RGB format
-		result = result.Join("Alpha: " + argb.a + " Red: " + argb.r + " Green: " + argb.g + " Blue: " + argb.b) + "\n"
+		result = result.Join(["Alpha: ", argb.a, " Red: ", argb.r, " Green: ", argb.g, " Blue: ", argb.b]) + "\n"
 		
 		'//	HSL info
-		result = result.Join("Hue: " + hsl.hue + " Saturation: " + hsl.saturation + " Lightnes: " + hsl.lightness)
+		result = result.Join(["Hue: ", hsl.hue, " Saturation: ", hsl.saturation, " Lightnes: ", hsl.lightness])
 		
 		Return result
 	End Function

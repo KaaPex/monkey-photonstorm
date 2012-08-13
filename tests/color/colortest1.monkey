@@ -2,6 +2,7 @@ Strict
 Import mojo
 Import flixel
 Import flixel.plugin.photonstorm
+#REFLECTION_FILTER="color*|flixel*"
 
 'import tests.TestsHeader;
 Function Main:Int()
@@ -12,26 +13,13 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, ColorTest1.ClassObject, 1, 60, 60)
+		Super.New(640, 480, GetClass("ColorTest1"), 1, 60, 60)
 		'FlxG.VisualDebug = True
 	End Method
 
 End Class
 
-Class ColorTest1Class Implements FlxClass
-
-	Method CreateInstance:Object()
-		Return New ColorTest1()
-	End Method
-	
-	Method InstanceOf:Bool(object:Object)
-		Return (ColorTest1(object) <> Null)
-	End Method
-
-End Class
-
 Class ColorTest1 Extends FlxState
-Global ClassObject:FlxClass = new ColorTest1Class()
 	'//	Test specific variables
 Private 
 	Field canvas:FlxSprite
