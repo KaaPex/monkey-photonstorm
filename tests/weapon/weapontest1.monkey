@@ -1,11 +1,13 @@
 Strict
-Import mojo
+
 Import flixel
+
 Import flixel.plugin.photonstorm
 Import "../assets/sprites/player.png"
 Import "../assets/sprites/bullet.png"
 
-#REFLECTION_FILTER="weapon*|flixel*"
+
+#REFLECTION_FILTER="weapon*|flixel.flx*|flixel.plugin*"
 
 'import tests.TestsHeader;
 Function Main:Int()
@@ -33,6 +35,7 @@ Private
 	
 	Field player:FlxSprite
 	Field lazer:FptFlxWeapon
+	Field control:FptFlxControl
 	
 '	Field header:TestsHeader
 
@@ -60,24 +63,22 @@ Public
 		
 		'//	Sets the direction and speed the bullets will be fired in
 		lazer.SetBulletDirection(FptFlxWeapon.BULLET_UP, 200)
-	
-		#rem
+
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		
 		'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
-		if (FlxG.getPlugin(FlxControl) == null)
-		{
-			FlxG.addPlugin(new FlxControl);
-		}
+		If (FlxG.GetPlugin(ClassInfo(FptFlxControl.ClassObject)) = Null) Then
+			FlxG.AddPlugin(New FptFlxControl())
+		Endif
 		
-		FlxControl.create(player, FlxControlHandler.MOVEMENT_INSTANT, FlxControlHandler.STOPPING_INSTANT, 1, false, false);
-		FlxControl.player1.setMovementSpeed(200, 0, 200, 0);
-		FlxControl.player1.setCursorControl(false, false, true, true);
-		FlxControl.player1.setBounds(16, 200, 280, 16);
+		FptFlxControl.Create(player, FptFlxControlHandler.MOVEMENT_INSTANT, FptFlxControlHandler.STOPPING_INSTANT, 1, False, False)
+		FptFlxControl.player1.SetMovementSpeed(200, 0, 200, 0)
+		FptFlxControl.player1.SetCursorControl(False, False, True, True)
+		FptFlxControl.player1.SetBounds(16, 200, 280, 16)
 		
 		'//	This is what fires the actual bullets (pressing SPACE) at a rate of 1 bullet per 250 ms, hooked to the lazer.fire method
-		FlxControl.player1.setFireButton("SPACE", FlxControlHandler.KEYMODE_PRESSED, 250, lazer.fire);
-		#end
+		FptFlxControl.player1.SetFireButton(KEY_SPACE, FptFlxControlHandler.KEYMODE_PRESSED, 250, lazer, GetClass("FptFlxWeapon").GetMethod("Fire",[]))
+
 		'//	The group which contains all of the bullets should be added so it is displayed
 		Add(lazer.group)
 		
@@ -87,11 +88,14 @@ Public
 		'add(header.overlay);
 	End Method
 	
+	Method Draw:Void()
+        DrawText "Application has been running for: "+Millisecs()/1000.0+" seconds.",0,0
+        Super.Draw()
+    End
+    
 	Method Update:Void()
-		If (KeyDown(KEY_SPACE) = 1) Then
-			lazer.Fire()
-		Endif
 	
 		Super.Update()
 	End Method
+	
 End Class

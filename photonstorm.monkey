@@ -2,3 +2,5 @@ Import fptflxcolor
 Import fptflxmath
 Import fptflxvelocity
 Import fptflxweapon
+Import fptflxcontrolhandler
+Import fptflxcontrol

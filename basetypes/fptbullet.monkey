@@ -154,20 +154,20 @@ Private
 		
 		exists = True
 		
-		'launchTime = getTimer();
+		launchTime = 0
 		
 		If (weapon.BulletLifeSpan > 0) Then
-			lifespan = weapon.BulletLifeSpan + FptFlxMath.Rand( -weapon.RndFactorLifeSpan, weapon.RndFactorLifeSpan)
-			expiresTime = FlxG.Elapsed + lifespan
+			lifespan = weapon.BulletLifeSpan + FptFlxMath.Rand( -weapon.RndFactorLifeSpan, weapon.RndFactorLifeSpan)			
+			expiresTime = lifespan
 		Endif
 		
-'		If (weapon.onFireCallback is Function) Then
-'			weapon.onFireCallback.apply()
-'		Endif
+		If (weapon.onFireCallback) Then
+			weapon.onFireCallback.Invoke([])
+		Endif
 		
-'		If (weapon.onFireSound) Then
-'			weapon.onFireSound.play()
-'		Endif
+		If (weapon.onFireSound) Then
+			weapon.onFireSound.Play()
+		Endif
 	End Method
 	
 	Method XGravity:Void(gx:Int) Property
@@ -187,14 +187,15 @@ Private
 	End Method
 	
 	Method Update:Void()
-		If (lifespan > 0 And FlxG.Elapsed > expiresTime) Then
+		If (lifespan > 0 And launchTime > expiresTime) Then
 			Kill()
 		Endif
 		
 		If (FptFlxMath.PointInFlxRect(x, y, weapon.bounds) = False) Then
 			Kill()
 		Endif
-		
+		launchTime += FlxG.Elapsed*1000
+		'Print launchTime*1000
 	End Method
 		
 End Class

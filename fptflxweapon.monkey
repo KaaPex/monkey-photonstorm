@@ -253,7 +253,7 @@ Private
 	 '* @return	true if a bullet was fired or false if one wasn't available. The bullet last fired is stored in FlxWeapon.prevBullet
 	 '*/
 	Method RunFire:Bool(meth:Int, x:Int = 0, y:Int = 0, target:FlxSprite = Null, angle:Int = 0)
-		If (_fireRate > 0 And (FlxG.Elapsed < _nextFire)) Then
+		If (_fireRate > 0 And (Millisecs() < _nextFire)) Then
 			Return False
 		Endif
 		
@@ -275,8 +275,8 @@ Private
 		currentBullet.velocity.x = 0
 		currentBullet.velocity.y = 0
 		
-		'lastFired = getTimer();
-		_nextFire = FlxG.Elapsed + _fireRate
+		_lastFired = Millisecs()
+		_nextFire = Millisecs() + _fireRate
 		
 		Local launchX:Int = _positionOffset.x
 		Local launchY:Int = _positionOffset.y

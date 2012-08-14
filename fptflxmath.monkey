@@ -13,6 +13,7 @@
 ' * @see Depends upon FlxMath
 ' Copyright: Monkey port - 2012 Aleksey 'KaaPex' Kazantsev
 '*/
+Strict
 Import monkey.math
 Import monkey.list
 Import flixel.flxrect
@@ -97,15 +98,13 @@ Public
 	 '* @param	rect		The Rectangle to test within
 	 '* @return	true if pointX/pointY is within the Rectangle, otherwise false
 	 '*/
-	'Function PointInRectangle:Bool(pointX:Int, pointY:Int, rect:Rectangle)
-	'{
-	'	If (pointX >= rect.x && pointX <= rect.right && pointY >= rect.y && pointY <= rect.bottom)
-	'	{
-	'		Return True;
-	'	}
-	'	
-	'	Return False;
-	'}
+	Function PointInRectangle:Bool(pointX:Int, pointY:Int, rect:FlxRect)
+		If (pointX >= rect.x and pointX <= rect.Right and pointY >= rect.y and pointY <= rect.Bottom)
+			Return True
+		Endif
+		
+		Return False
+	End Function
 	
 	'/**
 	 '* A faster (but much less accurate) version of Math.atan2(). For close range / loose comparisons this works very well, 
