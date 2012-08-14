@@ -77,7 +77,7 @@ Public
 		FptFlxControl.player1.SetBounds(16, 200, 280, 16)
 		
 		'//	This is what fires the actual bullets (pressing SPACE) at a rate of 1 bullet per 250 ms, hooked to the lazer.fire method
-		FptFlxControl.player1.SetFireButton(KEY_SPACE, FptFlxControlHandler.KEYMODE_PRESSED, 250, lazer, GetClass("FptFlxWeapon").GetMethod("Fire",[]))
+		FptFlxControl.player1.SetFireButton(KEY_SPACE, FptFlxControlHandler.KEYMODE_PRESSED, 250, lazer, ClassInfo(FptFlxWeapon.ClassObject).GetMethod("Fire",[]))
 
 		'//	The group which contains all of the bullets should be added so it is displayed
 		Add(lazer.group)

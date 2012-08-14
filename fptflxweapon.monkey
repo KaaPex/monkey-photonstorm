@@ -34,6 +34,8 @@ Import flixel.plugin.photonstorm.fptflxvelocity
 
 Class FptFlxWeapon 
 
+Global ClassObject:Object
+
 Public
 	'/**
 	 '* Internal name For this weapon (i.e. "pulse rifle")

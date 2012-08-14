@@ -101,7 +101,8 @@ Private
 	Field _jumpFromFallTime:Int 	'// A short window of opportunity For them To jump having just fallen off the edge of a surface
 	Field _extraSurfaceTime:Int 	'// Internal time of when they last collided with a valid jumpSurface
 	Field _jumpSurface:Int 		'// The surfaces from FlxObject they can jump from (i.e. FlxObject.FLOOR)
-	Field _jumpObject:Object
+	Field _jumpObject:Object	'// jump object
+	Field _jumpParams:Object[]  '//Jump parameters with which it jump
 	Field _jumpCallback:MethodInfo	'// A Function To call every time they jump
 	
 	Field _movement:Int
@@ -600,14 +601,16 @@ Public
 	'* @param	callback		A user defined function to call when the Sprite jumps
 	'* @param	altKey			Specify an alternative jump key that works AS WELL AS the primary jump key (TODO)
 	 '*/
-	Method SetJumpButton:Void(key:Int, keymode:Int, height:Int, surface:Int, repeatDelay:Int = 250, jumpFromFall:Int = 0, callback:MethodInfo = Null, altKey:Int = 0)
+	Method SetJumpButton:Void(key:Int, keymode:Int, height:Int, surface:Int, repeatDelay:Int = 250, jumpFromFall:Int = 0, jumpObj:Object = Null, callback:MethodInfo = Null, jumpParams:Object[] = [], altKey:Int = 0)
 		_jumpKey = key
 		_jumpKeyMode = keymode
 		_jumpHeight = height
 		_jumpSurface = surface
 		_jumpRate = repeatDelay
 		_jumpFromFallTime = jumpFromFall
+		_jumpObject = jumpObj
 		_jumpCallback = callback
+		_jumpParams = jumpParams
 		
 		If (altKey <> 0) Then
 			_altJumpKey = altKey
@@ -907,7 +910,7 @@ Private
 			Endif
 			
 			If (_jumpCallback) Then
-				'_jumpCallback.Invoke([])
+				_jumpCallback.Invoke(_jumpObject,_jumpParams)
 			Endif
 			
 			_lastJumpTime = 0
