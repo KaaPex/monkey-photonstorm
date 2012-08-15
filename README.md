@@ -15,11 +15,17 @@ The following classes are available in the latest version:
 
 FptFlxColor
 
-FptFlxMath (partially ported)
+FptFlxControl (includes FptFlxControlHandler)
+
+FptFlxMath
 
 FptFlxVelocity
 
-FptFlxWeapon (partially ported)
+FptFlxWeapon
+
+FptFlxDisplay
+
+FptFlxCollision
 
 Requirements
 ------------

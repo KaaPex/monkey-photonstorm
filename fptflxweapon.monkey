@@ -484,8 +484,8 @@ Private
 	 '* @param	yforce	A positive value applies gravity dragging the bullet down. A negative value drags the bullet up. Zero disables vertical gravity.
 	 '*/
 	Method SetBulletGravity:void(xForce:int, yForce:int)
-		group.SetAll("xGravity",  BoxFloat(xForce))
-		group.SetAll("yGravity",  BoxFloat(yForce))
+		group.SetAll("XGravity",  BoxInt(xForce))
+		group.SetAll("YGravity",  BoxInt(yForce))
 	End Method
 	
 	'/**
@@ -505,8 +505,8 @@ Private
 			group.SetAll("accelerates",  BoxBool(True))
 			group.SetAll("xAcceleration",  BoxInt(xAcceleration))
 			group.SetAll("yAcceleration", BoxInt(yAcceleration))
-			group.SetAll("maxVelocityX", BoxInt(xSpeedMax))
-			group.SetAll("maxVelocityY", BoxInt(ySpeedMax))
+			group.SetAll("MaxVelocityX", BoxInt(xSpeedMax))
+			group.SetAll("MaxVelocityY", BoxInt(ySpeedMax))
 		Endif
 	End Method
 	

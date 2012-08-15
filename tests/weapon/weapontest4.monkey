@@ -18,7 +18,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("WeaponTest1"), 1, 60, 60)
+		Super.New(640, 480, GetClass("WeaponTest4"), 1, 60, 60)
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -29,7 +29,7 @@ Class Objects Extends FlxGame
 
 End Class
 
-Class WeaponTest1 Extends FlxState
+Class WeaponTest4 Extends FlxState
 	'//	Test specific variables
 Private 
 	
@@ -41,8 +41,8 @@ Private
 
 Public
 	'//	Common variables
-	Field title:String = "Weapon 1"
-	Field description:String = "Space Invaders Example"
+	Field title:String = "Weapon 4"
+	Field description:String = "Bullet Acceleration Example"
 	Field instructions:String = "LEFT / RIGHT to Move. Space to Fire."
 	
 	Method Create:Void()
@@ -62,7 +62,7 @@ Public
 		lazer.MakeImageBullet(50, "bulletPNG", 5)
 		
 		'//	Sets the direction and speed the bullets will be fired in
-		lazer.SetBulletDirection(FptFlxWeapon.BULLET_UP, 200)
+		lazer.SetBulletAcceleration(0, -60, 200, 200)
 
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		

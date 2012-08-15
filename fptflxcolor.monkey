@@ -11,7 +11,7 @@
 ' * @link http://www.photonstorm.com
 ' * @author Richard Davey / Photon Storm
 ' * @see Depends upon FlxMath
-' Copyright: Monkey port - 2012 Aleksey 'KaaPex' Kazantsev
+' * Copyright: Monkey port - 2012 Aleksey 'KaaPex' Kazantsev
 '*/
 Strict
 Import flixel.flxg

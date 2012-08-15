@@ -1,6 +1,8 @@
 Import fptflxcolor
 Import fptflxmath
+Import fptflxcollision
 Import fptflxvelocity
+Import fptflxdisplay
 Import fptflxweapon
 Import fptflxcontrolhandler
 Import fptflxcontrol

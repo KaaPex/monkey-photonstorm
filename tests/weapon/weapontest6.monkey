@@ -3,9 +3,7 @@ Strict
 Import flixel
 
 Import flixel.plugin.photonstorm
-Import "../assets/sprites/player.png"
-Import "../assets/sprites/bullet.png"
-
+Import "../assets/sprites/asteroids_ship.png"
 
 #REFLECTION_FILTER="weapon*|flixel.flx*|flixel.plugin*"
 
@@ -18,18 +16,17 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("WeaponTest1"), 1, 60, 60)
+		Super.New(640, 480, GetClass("WeaponTest6"), 1, 60, 60)
 		FlxG.VisualDebug = True
 	End Method
 	
 	Method OnContentInit:Void()
-		FlxAssetsManager.AddImage("invaderPNG", "player.png")
-		FlxAssetsManager.AddImage("bulletPNG", "bullet.png")
+		FlxAssetsManager.AddImage("asteroidsShipPNG", "asteroids_ship.png")
 	End Method	
 
 End Class
 
-Class WeaponTest1 Extends FlxState
+Class WeaponTest6 Extends FlxState
 	'//	Test specific variables
 Private 
 	
@@ -41,9 +38,9 @@ Private
 
 Public
 	'//	Common variables
-	Field title:String = "Weapon 1"
-	Field description:String = "Space Invaders Example"
-	Field instructions:String = "LEFT / RIGHT to Move. Space to Fire."
+	Field title:String = "Weapon 6"
+	Field description:String = "Bullets shot at an angle"
+	Field instructions:String = "Left and Right to Rotate. Control to Fire."
 	
 	Method Create:Void()
 '		header = new TestsHeader(instructions);
@@ -52,17 +49,15 @@ Public
 		'//	Test specific
 			
 		'//	Our players space ship
-		player = New FlxSprite(160, 200, "invaderPNG")
+		player = New FlxSprite(160, 140,"asteroidsShipPNG")
+		'player.LoadRotatedGraphic("asteroidsShipPNG", 180, -1) '// not supported, but its all works fine without it
 		
 		'//	Creates our weapon. We'll call it "lazer" and link it to the x/y coordinates of the player sprite
 		lazer = new FptFlxWeapon("lazer", player, "x", "y")
 		
-		'//	Tell the weapon to create 50 bullets using the bulletPNG image.
-		'//	The 5 value is the x offset, which makes the bullet fire from the tip of the players ship.
-		lazer.MakeImageBullet(50, "bulletPNG", 5)
-		
-		'//	Sets the direction and speed the bullets will be fired in
-		lazer.SetBulletDirection(FptFlxWeapon.BULLET_UP, 200)
+		lazer.MakePixelBullet(40, 2, 2, $ff00e700, 5, 6)
+			
+		lazer.SetBulletSpeed(200)
 
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		
@@ -71,13 +66,17 @@ Public
 			FlxG.AddPlugin(New FptFlxControl())
 		Endif
 		
-		FptFlxControl.Create(player, FptFlxControlHandler.MOVEMENT_INSTANT, FptFlxControlHandler.STOPPING_INSTANT, 1, False, False)
-		FptFlxControl.player1.SetMovementSpeed(200, 0, 200, 0)
-		FptFlxControl.player1.SetCursorControl(False, False, True, True)
-		FptFlxControl.player1.SetBounds(16, 200, 280, 16)
+		FptFlxControl.Create(player, FptFlxControlHandler.MOVEMENT_ACCELERATES, FptFlxControlHandler.STOPPING_DECELERATES, 1, False, False)
+		FptFlxControl.player1.SetDeceleration(100, 100)
+		
+		'//	If you have ROTATION_STOPPING_DECELERATES then you need to give a Deceleration value equal to the rotation speed
+		FptFlxControl.player1.SetRotationSpeed(400, 400, 200, 400)
+		FptFlxControl.player1.SetRotationType(FptFlxControlHandler.ROTATION_ACCELERATES, FptFlxControlHandler.ROTATION_STOPPING_DECELERATES)
+		FptFlxControl.player1.SetRotationKeys()
+		FptFlxControl.player1.SetThrust(KEY_UP, 100, KEY_DOWN, 50)
 		
 		'//	This is what fires the actual bullets (pressing SPACE) at a rate of 1 bullet per 250 ms, hooked to the lazer.fire method
-		FptFlxControl.player1.SetFireButton(KEY_SPACE, FptFlxControlHandler.KEYMODE_PRESSED, 250, lazer, ClassInfo(FptFlxWeapon.ClassObject).GetMethod("Fire",[]))
+		FptFlxControl.player1.SetFireButton(KEY_CONTROL, FptFlxControlHandler.KEYMODE_PRESSED, 50, lazer, ClassInfo(FptFlxWeapon.ClassObject).GetMethod("FireFromParentAngle",[]))
 
 		'//	The group which contains all of the bullets should be added so it is displayed
 		Add(lazer.group)
@@ -94,7 +93,7 @@ Public
     End
     
 	Method Update:Void()
-	
+		FptFlxDisplay.ScreenWrap(player)
 		Super.Update()
 	End Method
 	

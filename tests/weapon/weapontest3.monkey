@@ -3,8 +3,8 @@ Strict
 Import flixel
 
 Import flixel.plugin.photonstorm
-Import "../assets/sprites/player.png"
-Import "../assets/sprites/bullet.png"
+Import "../assets/sprites/xenon2_ship.png"
+Import "../assets/sprites/xenon2_bomb.png"
 
 
 #REFLECTION_FILTER="weapon*|flixel.flx*|flixel.plugin*"
@@ -18,18 +18,18 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("WeaponTest1"), 1, 60, 60)
+		Super.New(640, 480, GetClass("WeaponTest3"), 1, 60, 60)
 		FlxG.VisualDebug = True
 	End Method
 	
 	Method OnContentInit:Void()
-		FlxAssetsManager.AddImage("invaderPNG", "player.png")
-		FlxAssetsManager.AddImage("bulletPNG", "bullet.png")
+		FlxAssetsManager.AddImage("xenon2ShipPNG", "xenon2_ship.png")
+		FlxAssetsManager.AddImage("xenon2BombPNG", "xenon2_bomb.png")
 	End Method	
 
 End Class
 
-Class WeaponTest1 Extends FlxState
+Class WeaponTest3 Extends FlxState
 	'//	Test specific variables
 Private 
 	
@@ -41,28 +41,31 @@ Private
 
 Public
 	'//	Common variables
-	Field title:String = "Weapon 1"
-	Field description:String = "Space Invaders Example"
-	Field instructions:String = "LEFT / RIGHT to Move. Space to Fire."
+	Field title:String = "Weapon 3"
+	Field description:String = "Animated Bullets Example"
+	Field instructions:String = "Left and Right to Move. Space to Fire."
 	
 	Method Create:Void()
 '		header = new TestsHeader(instructions);
 '		Add(header);
 		FlxG.Mouse.Show()
 		'//	Test specific
+'		header.showDarkBackground();
 			
 		'//	Our players space ship
-		player = New FlxSprite(160, 200, "invaderPNG")
+		player = New FlxSprite(160, 200, "xenon2ShipPNG")
 		
 		'//	Creates our weapon. We'll call it "lazer" and link it to the x/y coordinates of the player sprite
 		lazer = new FptFlxWeapon("lazer", player, "x", "y")
 		
-		'//	Tell the weapon to create 50 bullets using the bulletPNG image.
-		'//	The 5 value is the x offset, which makes the bullet fire from the tip of the players ship.
-		lazer.MakeImageBullet(50, "bulletPNG", 5)
+		'//	We're creating 20 animated bullets from the sprite sheet xenon2BombPNG. The frame width and height is 8x16.
+		'//	The animation goes through frames 1,2,3,4 And Then loops at 30fps.
+		'//	The 12x6 at the End is the offset so the bullet appears from the middle of the ship, Not the left-hand side.
+			
+		lazer.MakeAnimatedBullet(20, "xenon2BombPNG", 8, 16, [0, 1, 2, 3], 30, True, 12, 6)
 		
 		'//	Sets the direction and speed the bullets will be fired in
-		lazer.SetBulletDirection(FptFlxWeapon.BULLET_UP, 200)
+		lazer.SetBulletDirection(FptFlxWeapon.BULLET_UP, 180)
 
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		
