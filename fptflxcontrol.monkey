@@ -16,9 +16,7 @@ Import flixel
 Import fptflxcontrolhandler
 
 Class FptFlxControl Extends FlxBasic
-
-Global ClassObject:Object
-
+	Global ClassObject:Object
 '//	Quick references
 	Global player1:FptFlxControlHandler
 	Global player2:FptFlxControlHandler

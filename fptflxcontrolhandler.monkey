@@ -841,8 +841,8 @@ Private
 		'//	2 = Just Released
 		If ((_fireKeyMode = 0 And FlxG.Keys.Pressed(_fireKey)) Or (_fireKeyMode = 1 And FlxG.Keys.JustPressed(_fireKey)) Or (_fireKeyMode = 2 And FlxG.Keys.JustReleased(_fireKey))) Then
 			If (_fireRate > 0) Then
-				If (_lastFiredTime > _nextFireTime) Then
-					_lastFiredTime = 0
+				If (Millisecs() > _nextFireTime) Then
+					_lastFiredTime = Millisecs()
 					
 					_fireCallback.Invoke(_fireObject,_fireParams)
 					
@@ -851,7 +851,7 @@ Private
 					_nextFireTime = _lastFiredTime + _fireRate
 				Endif
 			Else
-				_lastFiredTime = 0
+				_lastFiredTime = Millisecs()
 				
 				_fireCallback.Invoke(_fireObject,_fireParams)
 				
@@ -859,8 +859,6 @@ Private
 			Endif
 			
 		Endif
-		
-		_lastFiredTime += FlxG.Elapsed*1000
 		
 		If (fired And _fireSound) Then
 			_fireSound.Play(True)
@@ -874,14 +872,14 @@ Private
 		
 		'//	This should be called regardless if they've pressed jump or not
 		If (_entity.IsTouching(_jumpSurface)) Then
-			_extraSurfaceTime = _lastJumpTime + _jumpFromFallTime
+			_extraSurfaceTime = Millisecs() + _jumpFromFallTime
 		Endif
 		
 		If ((_jumpKeyMode = KEYMODE_PRESSED And FlxG.Keys.Pressed(_jumpKey)) Or (_jumpKeyMode = KEYMODE_JUST_DOWN And FlxG.Keys.JustPressed(_jumpKey)) Or (_jumpKeyMode = KEYMODE_RELEASED And FlxG.Keys.JustReleased(_jumpKey))) Then
 			'//	Sprite not touching a valid jump surface
 			If (_entity.IsTouching(_jumpSurface) = False) Then
 				'//	They've run out of time to jump
-				If (_lastJumpTime > _extraSurfaceTime) Then
+				If (Millisecs() > _extraSurfaceTime) Then
 					Return jumped
 				Else
 					'//	Still within the fall-jump window of time, but have jumped recently
@@ -891,16 +889,16 @@ Private
 				Endif
 				
 				'//	If there is a jump Repeat rate set And we're still less than it then return
-				If (_lastJumpTime < _nextJumpTime) Then
+				If (Millisecs() < _nextJumpTime) Then
 					Return jumped
 				Endif
 			Else
 				'//	If there is a jump repeat rate set and we're still less than it then return
-				If (_lastJumpTime < _nextJumpTime) Then
+				If (Millisecs() < _nextJumpTime) Then
 					Return jumped
 				Endif
 			Endif
-			
+
 			If (_gravityY > 0) Then
 				'//	Gravity is pulling them down to earth, so they are jumping up (negative)
 				_entity.velocity.y = -_jumpHeight
@@ -913,13 +911,11 @@ Private
 				_jumpCallback.Invoke(_jumpObject,_jumpParams)
 			Endif
 			
-			_lastJumpTime = 0
+			_lastJumpTime = Millisecs()
 			_nextJumpTime = _lastJumpTime + _jumpRate
 				
 			jumped = True
 		Endif
-		
-		_lastJumpTime += FlxG.Elapsed*1000
 		
 		If (jumped And _jumpSound) Then
 			_jumpSound.Play(True)
