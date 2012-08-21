@@ -16,7 +16,10 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("WeaponTest6"), 1, 60, 60)
+		Super.New(320, 256, GetClass("WeaponTest6"), 1, 60, 60)
+		Print WeaponTest6.title
+		Print WeaponTest6.description
+		Print WeaponTest6.instructions		
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -31,16 +34,16 @@ Class WeaponTest6 Extends FlxState
 Private 
 	
 	Field player:FlxSprite
-	Field lazer:FptFlxWeapon
-	Field control:FptFlxControl
+	Field lazer:FlxWeapon
+	Field control:FlxControl
 	
 '	Field header:TestsHeader
 
 Public
 	'//	Common variables
-	Field title:String = "Weapon 6"
-	Field description:String = "Bullets shot at an angle"
-	Field instructions:String = "Left and Right to Rotate. Control to Fire."
+	Global title:String = "Weapon 6"
+	Global description:String = "Bullets shot at an angle"
+	Global instructions:String = "Left and Right to Rotate. Control to Fire."
 	
 	Method Create:Void()
 '		header = new TestsHeader(instructions);
@@ -53,7 +56,7 @@ Public
 		'player.LoadRotatedGraphic("asteroidsShipPNG", 180, -1) '// not supported, but its all works fine without it
 		
 		'//	Creates our weapon. We'll call it "lazer" and link it to the x/y coordinates of the player sprite
-		lazer = new FptFlxWeapon("lazer", player, "x", "y")
+		lazer = new FlxWeapon("lazer", player, "x", "y")
 		
 		lazer.MakePixelBullet(40, 2, 2, $ff00e700, 5, 6)
 			
@@ -62,21 +65,21 @@ Public
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		
 		'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
-		If (FlxG.GetPlugin(ClassInfo(FptFlxControl.ClassObject)) = Null) Then
-			FlxG.AddPlugin(New FptFlxControl())
+		If (FlxG.GetPlugin(ClassInfo(FlxControl.ClassObject)) = Null) Then
+			FlxG.AddPlugin(New FlxControl())
 		Endif
 		
-		FptFlxControl.Create(player, FptFlxControlHandler.MOVEMENT_ACCELERATES, FptFlxControlHandler.STOPPING_DECELERATES, 1, False, False)
-		FptFlxControl.player1.SetDeceleration(100, 100)
+		FlxControl.Create(player, FlxControlHandler.MOVEMENT_ACCELERATES, FlxControlHandler.STOPPING_DECELERATES, 1, False, False)
+		FlxControl.player1.SetDeceleration(100, 100)
 		
 		'//	If you have ROTATION_STOPPING_DECELERATES then you need to give a Deceleration value equal to the rotation speed
-		FptFlxControl.player1.SetRotationSpeed(400, 400, 200, 400)
-		FptFlxControl.player1.SetRotationType(FptFlxControlHandler.ROTATION_ACCELERATES, FptFlxControlHandler.ROTATION_STOPPING_DECELERATES)
-		FptFlxControl.player1.SetRotationKeys()
-		FptFlxControl.player1.SetThrust(KEY_UP, 100, KEY_DOWN, 50)
+		FlxControl.player1.SetRotationSpeed(400, 400, 200, 400)
+		FlxControl.player1.SetRotationType(FlxControlHandler.ROTATION_ACCELERATES, FlxControlHandler.ROTATION_STOPPING_DECELERATES)
+		FlxControl.player1.SetRotationKeys()
+		FlxControl.player1.SetThrust(KEY_UP, 100, KEY_DOWN, 50)
 		
 		'//	This is what fires the actual bullets (pressing SPACE) at a rate of 1 bullet per 250 ms, hooked to the lazer.fire method
-		FptFlxControl.player1.SetFireButton(KEY_CONTROL, FptFlxControlHandler.KEYMODE_PRESSED, 50, lazer, ClassInfo(FptFlxWeapon.ClassObject).GetMethod("FireFromParentAngle",[]))
+		FlxControl.player1.SetFireButton(KEY_CONTROL, FlxControlHandler.KEYMODE_PRESSED, 50, lazer, ClassInfo(FlxWeapon.ClassObject).GetMethod("FireFromParentAngle",[]))
 
 		'//	The group which contains all of the bullets should be added so it is displayed
 		Add(lazer.group)
@@ -93,7 +96,7 @@ Public
     End
     
 	Method Update:Void()
-		FptFlxDisplay.ScreenWrap(player)
+		FlxDisplay.ScreenWrap(player)
 		Super.Update()
 	End Method
 	

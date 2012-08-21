@@ -17,7 +17,10 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("WeaponTest10"), 1, 60, 60)
+		Super.New(320, 256, GetClass("WeaponTest10"), 1, 60, 60)
+		Print WeaponTest10.title
+		Print WeaponTest10.description
+		Print WeaponTest10.instructions			
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -34,15 +37,15 @@ Private
 	
 	Field walls:FlxGroup
 	Field ufo:FlxSprite
-	Field lazer:FptFlxWeapon
+	Field lazer:FlxWeapon
 	
 '	Field header:TestsHeader
 
 Public
 	'//	Common variables
-	Field title:String = "Weapon 10"
-	Field description:String = "Bullets with fixed life spans"
-	Field instructions:String = "Left click to Fire. Bullets live for 2 seconds."
+	Global title:String = "Weapon 10"
+	Global description:String = "Bullets with fixed life spans"
+	Global instructions:String = "Left click to Fire. Bullets live for 2 seconds."
 	
 	Method Create:Void()
 '		header = new TestsHeader(instructions);
@@ -52,7 +55,7 @@ Public
 		'header.showDarkBackground();
 		
 		'//	Creates our weapon. We'll call it "lazer"
-		lazer = new FptFlxWeapon("lazer")
+		lazer = new FlxWeapon("lazer")
 		
 		'//	Tell the weapon to create 50 bullets using the chunkPNG image.
 		lazer.MakeImageBullet(50, "chunkPNG")
@@ -79,7 +82,7 @@ Public
 		'//	Just some eye-candy, to make it look like a ufo is shooting :)
 		ufo = New FlxSprite(160, 140, "ufoPNG")
 		
-		walls = FptFlxCollision.CreateCameraWall(FlxG.Camera, FptFlxCollision.CAMERA_WALL_INSIDE, 32, false)
+		walls = FlxCollision.CreateCameraWall(FlxG.Camera, FlxCollision.CAMERA_WALL_INSIDE, 32, false)
 		
 		'//	The group which contains all of the bullets
 		Add(lazer.group)

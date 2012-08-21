@@ -1,23 +1,23 @@
 '/**
-' * FlxColor
-' * -- Part of the Flixel Power Tools set
-' * 
-' * v1.5 Added RGBtoWebString
-' * v1.4 getHSVColorWheel now supports an alpha value per color
-' * v1.3 Added getAlphaFloat
-' * v1.2 Updated for the Flixel 2.5 Plugin system
-' * 
-' * @version 1.5 - August 4th 2011
-' * @link http://www.photonstorm.com
-' * @author Richard Davey / Photon Storm
-' * @see Depends upon FlxMath
-' * Copyright: Monkey port - 2012 Aleksey 'KaaPex' Kazantsev
+ '* FlxColor
+ '* -- Part of the Flixel Power Tools set
+ '* 
+ '* v1.5 Added RGBtoWebString
+ '* v1.4 getHSVColorWheel now supports an alpha value per color
+ '* v1.3 Added getAlphaFloat
+ '* v1.2 Updated for the Flixel 2.5 Plugin system
+ '* 
+ '* @version 1.5 - August 4th 2011
+ '* @link http://www.photonstorm.com
+ '* @author Richard Davey / Photon Storm
+ '* @see Depends upon FlxMath
+ '* Copyright: Monkey port - 2012 Aleksey 'KaaPex' Kazantsev
 '*/
 Strict
 Import flixel.flxg
-Import fptflxmath
+Import flxmath
 
-Class FptFlxColor
+Class FlxExtendedColor Extends FlxColor
 
 	'/**
 	 '* Get HSV color wheel values in an array which will be 360 elements in size
@@ -48,7 +48,7 @@ Class FptFlxColor
 	Function GetComplementHarmony:Int(color:Int)
 		Local hsv:HSV = RGBtoHSV(color)
 		
-		Local opposite:Int = FptFlxMath.WrapValue(hsv.hue, 180, 359)
+		Local opposite:Int = FlxMath.WrapValue(hsv.hue, 180, 359)
 		
 		Return HSVtoRGB(opposite, 1.0, 1.0)
 	End Function
@@ -74,8 +74,8 @@ Class FptFlxColor
 		
 		Local h:Harmony = New Harmony()
 		h.hue1 = hsv.hue
-		h.hue2 = FptFlxMath.WrapValue(hsv.hue, 359 - threshold, 359)
-		h.hue3 = FptFlxMath.WrapValue(hsv.hue, threshold, 359)
+		h.hue2 = FlxMath.WrapValue(hsv.hue, 359 - threshold, 359)
+		h.hue3 = FlxMath.WrapValue(hsv.hue, threshold, 359)
 		
 		h.color1 = color
 		h.color2 = HSVtoRGB(h.hue2, 1.0, 1.0)
@@ -102,12 +102,12 @@ Class FptFlxColor
 			Return Null
 		Endif
 		
-		Local opposite:Int = FptFlxMath.WrapValue(hsv.hue, 180, 359)
+		Local opposite:Int = FlxMath.WrapValue(hsv.hue, 180, 359)
 		
 		Local h:Harmony = New Harmony()
 		h.hue1 = hsv.hue
-		h.hue2 = FptFlxMath.WrapValue(hsv.hue, opposite - threshold, 359)
-		h.hue3 = FptFlxMath.WrapValue(hsv.hue, opposite + threshold, 359)
+		h.hue2 = FlxMath.WrapValue(hsv.hue, opposite - threshold, 359)
+		h.hue3 = FlxMath.WrapValue(hsv.hue, opposite + threshold, 359)
 		
 		h.color1 = color
 		h.color2 = HSVtoRGB(h.hue2, hsv.saturation, hsv.value)
@@ -130,8 +130,8 @@ Class FptFlxColor
 	Function GetTriadicHarmony:Harmony(color:Int)
 		Local hsv:HSV = RGBtoHSV(color)
 		
-		Local triadic1:Int = FptFlxMath.WrapValue(hsv.hue, 120, 359)
-		Local triadic2:Int = FptFlxMath.WrapValue(triadic1, 120, 359)
+		Local triadic1:Int = FlxMath.WrapValue(hsv.hue, 120, 359)
+		Local triadic2:Int = FlxMath.WrapValue(triadic1, 120, 359)
 		
 		Local h:Harmony = New Harmony()
 		
@@ -419,7 +419,7 @@ Class FptFlxColor
 	 '* @return	The Alpha component of the color, will be between 0 and 255 (0 being no Alpha, 255 full Alpha)
 	 '*/
 	Function GetAlpha:Int(color:Int)
-		Return color Shr 24
+		Return color Shr 24 & $FF
 	End Function
 	
 	'/**

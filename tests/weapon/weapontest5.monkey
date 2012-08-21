@@ -17,7 +17,10 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("WeaponTest5"), 1, 60, 60)
+		Super.New(320, 256, GetClass("WeaponTest5"), 1, 60, 60)
+		Print WeaponTest5.title
+		Print WeaponTest5.description
+		Print WeaponTest5.instructions		
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -34,16 +37,16 @@ Private
 	
 	Field tank:FlxSprite
 	Field land:FlxSprite
-	Field canon:FptFlxWeapon
-	Field control:FptFlxControl
+	Field canon:FlxWeapon
+	Field control:FlxControl
 	
 '	Field header:TestsHeader
 
 Public
 	'//	Common variables
-	Field title:String = "Weapon 5"
-	Field description:String = "Advanced Wars Bullet Gravity Example"
-	Field instructions:String = "Left/Right to move + mouse to aim and fire."
+	Global title:String = "Weapon 5"
+	Global description:String = "Advanced Wars Bullet Gravity Example"
+	Global instructions:String = "Left/Right to move + mouse to aim and fire."
 	
 	Method Create:Void()
 '		header = new TestsHeader(instructions);
@@ -55,7 +58,7 @@ Public
 		tank = New FlxSprite(60, 200, "advWarsTankPNG")
 		
 		'//	Creates our weapon. We'll call it "lazer" and link it to the x/y coordinates of the player sprite
-		canon = new FptFlxWeapon("canon", tank, "x", "y")
+		canon = new FlxWeapon("canon", tank, "x", "y")
 		
 		'//	Tell the weapon to create 50 bullets using the bulletPNG image.
 		'//	The 5 value is the x offset, which makes the bullet fire from the tip of the players ship.
@@ -79,14 +82,14 @@ Public
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		
 		'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
-		If (FlxG.GetPlugin(ClassInfo(FptFlxControl.ClassObject)) = Null) Then
-			FlxG.AddPlugin(New FptFlxControl())
+		If (FlxG.GetPlugin(ClassInfo(FlxControl.ClassObject)) = Null) Then
+			FlxG.AddPlugin(New FlxControl())
 		Endif
 		
-		FptFlxControl.Create(tank, FptFlxControlHandler.MOVEMENT_INSTANT, FptFlxControlHandler.STOPPING_INSTANT, 1, False, False)
-		FptFlxControl.player1.SetMovementSpeed(200, 0, 200, 0)
-		FptFlxControl.player1.SetCursorControl(False, False, True, True)
-		FptFlxControl.player1.SetBounds(16, 200, 280, 16)
+		FlxControl.Create(tank, FlxControlHandler.MOVEMENT_INSTANT, FlxControlHandler.STOPPING_INSTANT, 1, False, False)
+		FlxControl.player1.SetMovementSpeed(200, 0, 200, 0)
+		FlxControl.player1.SetCursorControl(False, False, True, True)
+		FlxControl.player1.SetBounds(16, 200, 280, 16)
 		
 		Add(land)
 		

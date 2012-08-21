@@ -17,7 +17,10 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("WeaponTest8"), 1, 60, 60)
+		Super.New(320, 256, GetClass("WeaponTest8"), 1, 60, 60)
+		Print WeaponTest8.title
+		Print WeaponTest8.description
+		Print WeaponTest8.instructions		
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -34,15 +37,15 @@ Private
 	
 	Field tank:FlxSprite
 	Field land:FlxSprite
-	Field canon:FptFlxWeapon
+	Field canon:FlxWeapon
 	
 '	Field header:TestsHeader
 
 Public
 	'//	Common variables
-	Field title:String = "Weapon 8"
-	Field description:String = "Random Bullet Angles"
-	Field instructions:String = "Left click to Fire. Random angle +20"
+	Global title:String = "Weapon 8"
+	Global description:String = "Random Bullet Angles"
+	Global instructions:String = "Left click to Fire. Random angle +20"
 	
 	Method Create:Void()
 '		header = new TestsHeader(instructions);
@@ -54,7 +57,7 @@ Public
 		tank = New FlxSprite(60, 200, "advWarsTankPNG")
 		
 		'//	Creates our weapon. We'll call it "lazer" and link it to the x/y coordinates of the player sprite
-		canon = new FptFlxWeapon("canon", tank, "x", "y")
+		canon = new FlxWeapon("canon", tank, "x", "y")
 		
 		'//	Tell the weapon to create 50 bullets using the bulletPNG image.
 		'//	The 5 value is the x offset, which makes the bullet fire from the tip of the players ship.

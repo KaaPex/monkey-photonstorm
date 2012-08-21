@@ -21,7 +21,10 @@ Class Objects Extends FlxGame
 	
 	Method New()		
 		Super.New(320, 288, GetClass("ControlTest4"), 1, 60, 60)
-		
+
+		Print ControlTest4.title
+		Print ControlTest4.description
+		Print ControlTest4.instructions		
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -59,24 +62,24 @@ Public
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		
 		'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
-		If (FlxG.GetPlugin(ClassInfo(FptFlxControl.ClassObject)) = Null) Then
-			FlxG.AddPlugin(New FptFlxControl())
+		If (FlxG.GetPlugin(ClassInfo(FlxControl.ClassObject)) = Null) Then
+			FlxG.AddPlugin(New FlxControl())
 		Endif
 		
 		'//	Control the player
-		FptFlxControl.Create(player, FptFlxControlHandler.MOVEMENT_INSTANT, FptFlxControlHandler.STOPPING_INSTANT, 1, False, False)
+		FlxControl.Create(player, FlxControlHandler.MOVEMENT_INSTANT, FlxControlHandler.STOPPING_INSTANT, 1, False, False)
 		
 		'//	200 px/sec horizontal movement, no vertical movement
-		FptFlxControl.player1.SetMovementSpeed(200, 0, 200, 0)
+		FlxControl.player1.SetMovementSpeed(200, 0, 200, 0)
 		
 		'//	Arrow keys will move the player, but only left and right
-		FptFlxControl.player1.SetCursorControl(False, False, True, True);
+		FlxControl.player1.SetCursorControl(False, False, True, True);
 		
 		'//	Enable the SPACE BAR as a fire button. They can keep fire held down (KEYMODE_PRESSED) and fire at a rate of 1 bullet per 200ms
-		FptFlxControl.player1.SetFireButton(KEY_SPACE, FptFlxControlHandler.KEYMODE_PRESSED, 200, Self, reflection.GetClass("ControlTest4").GetMethod("Fire",[]))
+		FlxControl.player1.SetFireButton(KEY_SPACE, FlxControlHandler.KEYMODE_PRESSED, 200, Self, reflection.GetClass("ControlTest4").GetMethod("Fire",[]))
 		
 		'//	Restrict the player To this rectangular area
-		FptFlxControl.player1.SetBounds(16, 200, 280, 16)
+		FlxControl.player1.SetBounds(16, 200, 280, 16)
 		
 		'//	Bring up the Flixel debugger if you'd like to watch these values in real-time
 		'FlxG.watch(player.velocity, "x", "vx");
@@ -127,7 +130,7 @@ Public
 	
 	Method Destroy:Void()
 		'//	Important! Clear out the plugin otherwise resources will get messed right up after a while
-		FptFlxControl.Clear()
+		FlxControl.Clear()
 			
 		Super.Destroy()
 	End Method

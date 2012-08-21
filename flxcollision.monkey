@@ -15,23 +15,19 @@
 '*/
 Strict
 
-'import flash.display.BitmapData;
-'import flash.display.Sprite;
-'import flash.geom.ColorTransform;
-'import flash.geom.Matrix;
-'import flash.geom.Point;
-'import flash.geom.Rectangle;
-'import flash.display.BlendMode;
-
 Import flixel
+Import flxextendedrect
+Import flxmath
+Import flxextendedcolor
+Import monkey.math
 	
-Class FptFlxCollision 
+Class FlxCollision 
 
 	'public static var debug:BitmapData = new BitmapData(1, 1, false);
 	
 	Global CAMERA_WALL_OUTSIDE:Int = 0
 	Global CAMERA_WALL_INSIDE:Int = 1
-	#rem
+
 	'/**
 	 '* A Pixel Perfect Collision check between two FlxSprites.
 	 '* It will do a bounds check first, and if that passes it will run a pixel perfect match on the intersecting area.
@@ -55,48 +51,47 @@ Class FptFlxCollision
 			pointB.x = target.x - Int(camera.scroll.x * target.scrollFactor.x) - target.offset.x
 			pointB.y = target.y - Int(camera.scroll.y * target.scrollFactor.y) - target.offset.y
 		Else
-			pointA.x = contact.x - Int(FlxG.camera.scroll.x * contact.scrollFactor.x) - contact.offset.x
-			pointA.y = contact.y - Int(FlxG.camera.scroll.y * contact.scrollFactor.y) - contact.offset.y
+			pointA.x = contact.x - Int(FlxG.Camera.scroll.x * contact.scrollFactor.x) - contact.offset.x
+			pointA.y = contact.y - Int(FlxG.Camera.scroll.y * contact.scrollFactor.y) - contact.offset.y
 			
-			pointB.x = target.x - Int(FlxG.camera.scroll.x * target.scrollFactor.x) - target.offset.x
-			pointB.y = target.y - Int(FlxG.camera.scroll.y * target.scrollFactor.y) - target.offset.y
+			pointB.x = target.x - Int(FlxG.Camera.scroll.x * target.scrollFactor.x) - target.offset.x
+			pointB.y = target.y - Int(FlxG.Camera.scroll.y * target.scrollFactor.y) - target.offset.y
 		Endif
 		
-		Local boundsA:FlxRect = New FlxRect(pointA.x, pointA.y, contact.framePixels.width, contact.framePixels.height)
-		Local boundsB:FlxRect = new FlxRect(pointB.x, pointB.y, target.framePixels.width, target.framePixels.height)
+		Local boundsA:FlxExtendedRect = New FlxExtendedRect(pointA.x, pointA.y, contact.frameWidth, contact.frameHeight)
+		Local boundsB:FlxExtendedRect = New FlxExtendedRect(pointB.x, pointB.y, target.frameWidth, target.frameHeight)
 		
-		Local intersect:FlxRect = boundsA.intersection(boundsB);
+		Local intersect:FlxExtendedRect = boundsA.Intersection(boundsB)
 		
-		if (intersect.isEmpty() || intersect.width == 0 || intersect.height == 0)
-		{
-			return false;
-		}
+		If ((intersect.width = 0 And intersect.height = 0) Or intersect.width = 0 Or intersect.height = 0) Then
+			Return False
+		Endif
 		
 		'//	Normalise the values or it'll break the BitmapData creation below
-		intersect.x = Math.floor(intersect.x);
-		intersect.y = Math.floor(intersect.y);
-		intersect.width = Math.ceil(intersect.width);
-		intersect.height = Math.ceil(intersect.height);
+		intersect.x = Floor(intersect.x)
+		intersect.y = Floor(intersect.y)
+		intersect.width = Ceil(intersect.width)
+		intersect.height = Ceil(intersect.height)
 		
-		if (intersect.isEmpty())
-		{
-			return false;
-		}
-		
+		If (intersect.width = 0 And intersect.height = 0)
+			Return False
+		Endif
+		Return True
+#rem		
 		'//	Thanks to Chris Underwood for helping with the translate logic :)
 		
-		var matrixA:Matrix = new Matrix;
+		var matrixA:Matrix = New Matrix;
 		matrixA.translate(-(intersect.x - boundsA.x), -(intersect.y - boundsA.y));
 		
-		var matrixB:Matrix = new Matrix;
+		var matrixB:Matrix = New Matrix;
 		matrixB.translate(-(intersect.x - boundsB.x), -(intersect.y - boundsB.y));
 		
 		var testA:BitmapData = contact.framePixels;
 		var testB:BitmapData = target.framePixels;
-		var overlapArea:BitmapData = new BitmapData(intersect.width, intersect.height, false);
+		var overlapArea:BitmapData = New BitmapData(intersect.width, intersect.height, False);
 		
-		overlapArea.draw(testA, matrixA, new ColorTransform(1, 1, 1, 1, 255, -255, -255, alphaTolerance), BlendMode.NORMAL);
-		overlapArea.draw(testB, matrixB, new ColorTransform(1, 1, 1, 1, 255, 255, 255, alphaTolerance), BlendMode.DIFFERENCE);
+		overlapArea.draw(testA, matrixA, New ColorTransform(1, 1, 1, 1, 255, -255, -255, alphaTolerance), BlendMode.NORMAL);
+		overlapArea.draw(testB, matrixB, New ColorTransform(1, 1, 1, 1, 255, 255, 255, alphaTolerance), BlendMode.DIFFERENCE);
 		
 		'//	Developers: If you'd like to see how this works, display it in your game somewhere. Or you can comment it out to save a tiny bit of performance
 		debug = overlapArea;
@@ -104,17 +99,18 @@ Class FptFlxCollision
 		var overlap:Rectangle = overlapArea.getColorBoundsRect(0xffffffff, 0xff00ffff);
 		overlap.offset(intersect.x, intersect.y);
 		
-		if (overlap.isEmpty())
+		If (overlap.isEmpty())
 		{
-			return false;
+			Return False;
 		}
-		else
+		Else
 		{
-			return true;
+			Return True;
 		}
+#End		
 	End Function
-		
 	
+		
 	'/**
 	 '* A Pixel Perfect Collision check between a given x/y coordinate and an FlxSprite<br>
 	 '* 
@@ -127,23 +123,21 @@ Class FptFlxCollision
 	 '*/
 	function PixelPerfectPointCheck:Bool(pointX:int, pointY:int, target:FlxSprite, alphaTolerance:int = 255)
 		'//	Intersect check
-		If (FptFlxMath.PointInCoordinates(pointX, pointY, target.x, target.y, target.framePixels.width, target.framePixels.height) = False) Then
+		If (FlxMath.PointInCoordinates(pointX, pointY, target.x, target.y, target.frameWidth, target.frameHeight) = False) Then
 			Return False
 		Endif
 		
 		'//	How deep is pointX/Y within the rect?
-		Local test:BitmapData = target.framePixels;
+		Local buf:=New Int[1]
+		ReadPixels (buf,pointX, pointY,1,1 ,0,0)
 		
-		if (FlxColor.getAlpha(test.getPixel32(pointX - target.x, pointY - target.y)) >= alphaTolerance)
-		{
-			return true;
-		}
-		else
-		{
-			return false;
-		}
+		If (FlxExtendedColor.GetAlpha(buf[0]) >= alphaTolerance) Then
+			Return True
+		Else
+			Return False
+		Endif
 	End Function
-	#End
+
 	
 	'/**
 	 '* Creates a "wall" around the given camera which can be used for FlxSprite collision

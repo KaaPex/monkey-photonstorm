@@ -15,11 +15,10 @@
 '*/
 Strict
 
-	'import flash.accessibility.Accessibility;
 Import flixel
-Import fptflxmath
+Import flxmath
 	
-Class FptFlxVelocity 
+Class FlxVelocity 
 	
 	'/**
 	 '* Sets the source FlxSprite x/y velocity so it will move directly towards the destination FlxSprite at the speed given (in pixels per second)<br>
@@ -179,7 +178,7 @@ Class FptFlxVelocity
 		Local dx:Float = (a.x + a.origin.x) - (b.x + b.origin.x)
 		Local dy:Float = (a.y + a.origin.y) - (b.y + b.origin.y)
 	
-		Return Int(FptFlxMath.VectorLength(dx, dy))
+		Return Int(FlxMath.VectorLength(dx, dy))
 	End Function
 		
 	'/**
@@ -193,7 +192,7 @@ Class FptFlxVelocity
 		Local dx:Float = (a.x + a.origin.x) - (target.x)
 		Local dy:Float = (a.y + a.origin.y) - (target.y)
 
-		Return Int(FptFlxMath.VectorLength(dx, dy))
+		Return Int(FlxMath.VectorLength(dx, dy))
 	End Function
 		
 	'/**
@@ -206,7 +205,7 @@ Class FptFlxVelocity
 		Local dx:Float = (a.x + a.origin.x) - FlxG.Mouse.screenX
 		Local dy:Float = (a.y + a.origin.y) - FlxG.Mouse.screenY
 		
-		Return Int(FptFlxMath.VectorLength(dx, dy))
+		Return Int(FlxMath.VectorLength(dx, dy))
 	End Function
 		
 	'/**
@@ -224,7 +223,7 @@ Class FptFlxVelocity
 		Local dy:Float = (target.y) - (a.y + a.origin.y)
 		
 		If (asDegrees) Then
-			Return FptFlxMath.AsDegrees(ATan2r(dy, dx))
+			Return FlxMath.AsDegrees(ATan2r(dy, dx))
 		Else
 			Return ATan2r(dy, dx)
 		Endif
@@ -245,7 +244,7 @@ Class FptFlxVelocity
 		Local dy:Float = (b.y + b.origin.y) - (a.y + a.origin.y)
 		
 		If (asDegrees) Then
-			Return FptFlxMath.AsDegrees(ATan2r(dy, dx))
+			Return FlxMath.AsDegrees(ATan2r(dy, dx))
 		Else
 			Return ATan2r(dy, dx)
 		Endif
@@ -314,7 +313,7 @@ Class FptFlxVelocity
 		Local dy:Float = FlxG.Mouse.screenY - p.y
 			
 		If (asDegrees) Then
-			Return FptFlxMath.AsDegrees(ATan2r(dy, dx))
+			Return FlxMath.AsDegrees(ATan2r(dy, dx))
 		Else
 			Return ATan2r(dy, dx)
 		Endif

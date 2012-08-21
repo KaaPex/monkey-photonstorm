@@ -13,7 +13,10 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("ColorTest2"), 1, 60, 60)
+		Super.New(320, 256, GetClass("ColorTest2"), 1, 60, 60)
+		Print ColorTest2.title
+		Print ColorTest2.description
+		Print ColorTest2.instructions		
 		'FlxG.VisualDebug = True
 	End Method
 
@@ -32,21 +35,21 @@ Private
 
 Public
 	'//	Common variables
-	Field title:String = "Colors 2"
-	Field description:String = "Using the HSV color wheel"
-	Field instructions:String = "Using the HSV color wheel"
+	Global title:String = "Colors 2"
+	Global description:String = "Using the HSV color wheel"
+	Global instructions:String = "Using the HSV color wheel"
 	
 	Method Create:Void()
 '		header = new TestsHeader(instructions);
 '		Add(header);
 		
 		'//	Test specific
-		hsv = FptFlxColor.GetHSVColorWheel()
+		hsv = FlxExtendedColor.GetHSVColorWheel()
 		hsvIndex = 0
-		canvas = New FlxSprite(32, 32).MakeGraphic(580, 380, $ff000000)	
+		canvas = New FlxSprite(32, 32).MakeGraphic(256, 176, $ff000000)	
 		Add(canvas)
 	
-		lastRect = New FlxRect(16, 16, 32, 32)
+		lastRect = New FlxRect(8, 8, 16, 16)
 		
 		'//	Header overlay
 		'add(header.overlay);
@@ -61,11 +64,11 @@ Public
 			Local rect:FlxSprite = New FlxSprite(lastRect.x, lastRect.y).MakeGraphic(lastRect.width, lastRect.height, hsv[hsvIndex])
 			Add(rect)
 			
-			lastRect.x += 16
+			lastRect.x += 8
 			
-			If (lastRect.x >= 580) Then
-				lastRect.x = 16
-				lastRect.y += 24
+			If (lastRect.x >= 240) Then
+				lastRect.x = 8
+				lastRect.y += 12
 			Endif
 			
 			hsvIndex += 1

@@ -24,6 +24,9 @@ Class Objects Extends FlxGame
 	Method New()		
 		Super.New(320, 288, GetClass("ControlTest3"), 1, 60, 60)
 		
+		Print ControlTest3.title
+		Print ControlTest3.description
+		Print ControlTest3.instructions
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -70,18 +73,18 @@ Public
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		
 		'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
-		If (FlxG.GetPlugin(ClassInfo(FptFlxControl.ClassObject)) = Null) Then
-			FlxG.AddPlugin(New FptFlxControl())
+		If (FlxG.GetPlugin(ClassInfo(FlxControl.ClassObject)) = Null) Then
+			FlxG.AddPlugin(New FlxControl())
 		Endif
 		
 		'//	Control the players			
-		FptFlxControl.Create(player1, FptFlxControlHandler.MOVEMENT_ACCELERATES, FptFlxControlHandler.STOPPING_DECELERATES, 1, false, false)
-		FptFlxControl.player1.SetWASDControl()
-		FptFlxControl.player1.SetStandardSpeed(200)
+		FlxControl.Create(player1, FlxControlHandler.MOVEMENT_ACCELERATES, FlxControlHandler.STOPPING_DECELERATES, 1, false, false)
+		FlxControl.player1.SetWASDControl()
+		FlxControl.player1.SetStandardSpeed(200)
 		
-		FptFlxControl.Create(player2, FptFlxControlHandler.MOVEMENT_ACCELERATES, FptFlxControlHandler.STOPPING_DECELERATES, 2, false, false)
-		FptFlxControl.player2.SetIJKLControl()
-		FptFlxControl.player2.SetStandardSpeed(200)
+		FlxControl.Create(player2, FlxControlHandler.MOVEMENT_ACCELERATES, FlxControlHandler.STOPPING_DECELERATES, 2, false, false)
+		FlxControl.player2.SetIJKLControl()
+		FlxControl.player2.SetStandardSpeed(200)
 		
 		'//	A scene for our players to move around
 		scene = New ControlTestScene1()
@@ -111,7 +114,7 @@ Public
 	
 	Method Destroy:Void()
 		'//	Important! Clear out the plugin otherwise resources will get messed right up after a while
-		FptFlxControl.Clear()
+		FlxControl.Clear()
 			
 		Super.Destroy()
 	End Method

@@ -19,7 +19,7 @@ Import monkey.list
 Import flixel.flxrect
 Import flixel.flxg
 
-Class FptFlxMath
+Class FlxMath
 
 	Const RAND_MAX:Int = 999999999
 	Const RADTODEG:Float = 180 / PI

@@ -16,8 +16,8 @@
 Strict
 Import reflection
 Import flixel
-Import flixel.plugin.photonstorm.basetypes.fptbullet
-Import flixel.plugin.photonstorm.fptflxvelocity
+Import flixel.plugin.photonstorm.basetypes.bullet
+Import flixel.plugin.photonstorm.flxvelocity
 
 '/**
  '* TODO
@@ -32,7 +32,7 @@ Import flixel.plugin.photonstorm.fptflxvelocity
  '* Some Weapon base classes like shotgun, lazer, etc?
  '*/
 
-Class FptFlxWeapon 
+Class FlxWeapon 
 
 Global ClassObject:Object
 
@@ -88,7 +88,7 @@ Public
 	'/**
 	 '* A reference to the Bullet that was fired
 	 '*/
-	Field currentBullet:FptBullet
+	Field currentBullet:Bullet
 	
 	'//	Callbacks
 	Field onPreFireCallback:FunctionInfo
@@ -170,7 +170,7 @@ Private
 		group = New FlxGroup(quantity)
 		
 		For Local b:Int = 0 Until quantity
-			Local tempBullet:FptBullet = New FptBullet(Self, b)
+			Local tempBullet:Bullet = New Bullet(Self, b)
 			
 			tempBullet.MakeGraphic(width, height, color)
 			
@@ -200,7 +200,7 @@ Private
 		_rotateToAngle = autoRotate
 		
 		For Local b:Int = 0 Until quantity
-			Local tempBullet:FptBullet = New FptBullet(Self, b)
+			Local tempBullet:Bullet = New Bullet(Self, b)
 			
 			If (autoRotate) Then
 				tempBullet.LoadRotatedGraphic(image, rotations, frame)
@@ -232,7 +232,7 @@ Private
 		group = New FlxGroup(quantity)
 		
 		For Local b:Int = 0 Until quantity
-			Local tempBullet:FptBullet = New FptBullet(Self, b)
+			Local tempBullet:Bullet = New Bullet(Self, b)
 			
 			tempBullet.LoadGraphic(imageSequence, True, False, frameWidth, frameHeight)
 			
@@ -292,7 +292,7 @@ Private
 		Endif
 		
 		If (_directionFromParent) Then
-			_velocity = FptFlxVelocity.VelocityFromFacing(_parent, _bulletSpeed)
+			_velocity = FlxVelocity.VelocityFromFacing(_parent, _bulletSpeed)
 		Endif
 		
 		'//	Faster (less CPU) to use this small if-else ladder than a switch statement
@@ -473,7 +473,7 @@ Private
 	 '* @param	speed		The speed it will move, in pixels per second (sq)
 	 '*/
 	Method SetBulletDirection:void(angle:int, speed:int)
-		_velocity = FptFlxVelocity.VelocityFromAngle(angle, speed)
+		_velocity = FlxVelocity.VelocityFromAngle(angle, speed)
 	End Method
 	
 	'/**
@@ -590,17 +590,17 @@ Private
 	 '* 
 	 '* @return	A bullet
 	 '*/
-	Method GetFreeBullet:FptBullet()
-		Local result:FptBullet = Null
+	Method GetFreeBullet:Bullet()
+		Local result:Bullet = Null
 		
 		If (group = Null Or group.Length = 0)
-			FlxG.Log("FptFlxWeapon.monkey cannot fire a bullet until one has been created via a call to makePixelBullet or makeImageBullet")
+			FlxG.Log("FlxWeapon.monkey cannot fire a bullet until one has been created via a call to makePixelBullet or makeImageBullet")
 			Return Null
 		Endif
 		
 		For Local bullet:FlxBasic = Eachin group.Members
 			If (bullet.exists = False) Then
-				result = FptBullet(bullet)
+				result = Bullet(bullet)
 				Exit
 			Endif
 		Next

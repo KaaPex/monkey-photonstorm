@@ -1,7 +1,7 @@
 Strict
 #TEXT_FILES="*.txt|*.xml|*.json|*.csv"
 
-Import "../assets/sprites/ufo.png"
+Import "../assets/sprites/thrust_ship.png"
 Import "../assets/tiles/sci-fi-tiles.png"
 Import "../assets/maps/mapCSV_SciFi_Map1.csv"
 
@@ -21,23 +21,23 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()		
-		Super.New(320, 256, GetClass("ControlTest1"), 1, 60, 60)
+		Super.New(320, 256, GetClass("ControlTest6"), 1, 60, 60)
 		
-		Print ControlTest1.title
-		Print ControlTest1.description
-		Print ControlTest1.instructions		
+		Print ControlTest6.title
+		Print ControlTest6.description
+		Print ControlTest6.instructions		
 		FlxG.VisualDebug = True
 	End Method
 	
 	Method OnContentInit:Void()
 		FlxAssetsManager.AddString("scifiMap1CSV", "mapCSV_SciFi_Map1.csv")
-		FlxAssetsManager.AddImage("ufoPNG", "ufo.png")
+		FlxAssetsManager.AddImage("thrustShipPNG", "thrust_ship.png")
 		FlxAssetsManager.AddImage("scifiTilesPNG", "sci-fi-tiles.png")
 	End Method	
 
 End Class
 
-Class ControlTest1 Extends FlxState
+Class ControlTest6 Extends FlxState
 	'//	Test specific variables
 Private 
 	
@@ -48,8 +48,8 @@ Private
 
 Public
 	'//	Common variables
-	Global title:String = "Controls 1"
-	Global description:String = "Basic cursor key movement"
+	Global title:String = "Controls 5"
+	Global description:String = "Acceleration and Deceleration Example"
 	Global instructions:String = "Move with the cursor / arrow keys"
 	
 	Method Create:Void()
@@ -59,7 +59,9 @@ Public
 		'//	Test specific
 			
 		'//	Our players space ship
-		player = New FlxSprite(64, 64, "ufoPNG")
+		player = New FlxSprite(160, 120, "thrustShipPNG")
+		'player.LoadRotatedGraphic("thrustShipPNG", 180, -1) 'NOT YET SUPPORTED
+		player.elasticity = 0.8
 		
 
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
@@ -69,11 +71,14 @@ Public
 			FlxG.AddPlugin(New FlxControl())
 		Endif
 		
-		FlxControl.Create(player, FlxControlHandler.MOVEMENT_INSTANT, FlxControlHandler.STOPPING_INSTANT)
-		FlxControl.player1.SetStandardSpeed(100, false)
-		
-		'//	setStandardSpeed is a special short-cut function, you can get more control (and the same result) by calling this instead:
-		'//FlxControl.player1.setMovementSpeed(100, 100, 100, 100)
+		'//	Control the player
+			
+		FlxControl.Create(player, FlxControlHandler.MOVEMENT_ACCELERATES, FlxControlHandler.STOPPING_DECELERATES, 1, false, false)
+		FlxControl.player1.SetRotationSpeed(200, 200, 200, 300)
+		FlxControl.player1.SetRotationType(FlxControlHandler.ROTATION_INSTANT, FlxControlHandler.ROTATION_STOPPING_DECELERATES)
+		FlxControl.player1.SetRotationKeys()
+		FlxControl.player1.SetThrust(KEY_UP, 100, KEY_DOWN, 100)
+		FlxControl.player1.SetMovementSpeed(0, 0, 200, 200, 100, 100)
 		
 		'//	A basic scene for our ufo to fly around
 		scene = New ControlTestScene1()
@@ -94,9 +99,9 @@ Public
         Super.Draw()
     End
     
-	Method Update:Void()
-		FlxG.Collide(player, scene.map)
+	Method Update:Void()		
 		Super.Update()
+		FlxG.Collide(player, scene.map)
 	End Method
 	
 End Class

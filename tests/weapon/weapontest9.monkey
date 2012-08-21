@@ -1,4 +1,3 @@
-#rem NOT WORK YET
 Strict
 
 Import flixel
@@ -18,7 +17,10 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("WeaponTest9"), 1, 60, 60)
+		Super.New(320, 256, GetClass("WeaponTest9"), 1, 60, 60)
+		Print WeaponTest9.title
+		Print WeaponTest9.description
+		Print WeaponTest9.instructions		
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -29,22 +31,22 @@ Class Objects Extends FlxGame
 
 End Class
 
-Class WeaponTest9 Extends FlxState
+Class WeaponTest9 Extends FlxState Implements FlxOverlapNotifyListener
 	'//	Test specific variables
 Private 
 	
 	Field tank:FlxSprite
 	Field land:FlxSprite
-	Field canon:FptFlxWeapon
+	Field canon:FlxWeapon
 	Field damageSize:Int = 2
 	
 '	Field header:TestsHeader
 
 Public
 	'//	Common variables
-	Field title:String = "Weapon 9"
-	Field description:String = "Random Bullet Angles"
-	Field instructions:String = "Left click to Fire. Random angle +20"
+	Global title:String = "Weapon 9"
+	Global description:String = "Random Bullet Angles"
+	Global instructions:String = "Left click to Fire. Random angle +20"
 	
 	Method Create:Void()
 '		header = new TestsHeader(instructions);
@@ -53,10 +55,10 @@ Public
 		'//	Test specific
 			
 		'//	Our players tank
-		tank = New FlxSprite(60, 200, "advWarsTankPNG")
+		tank = New FlxSprite(16, 132, "advWarsTankPNG")
 		
 		'//	Creates our weapon. We'll call it "lazer" and link it to the x/y coordinates of the player sprite
-		canon = new FptFlxWeapon("canon", tank, "x", "y")
+		canon = new FlxWeapon("canon", tank, "x", "y")
 		
 		'//	Tell the weapon to create 50 bullets using the bulletPNG image.
 		'//	The 5 value is the x offset, which makes the bullet fire from the tip of the players ship.
@@ -72,7 +74,7 @@ Public
 		canon.SetFireRate(50)		
 			
 		'//	Same land to drive over, yes, all stolen from Advanced Wars on the Gameboy
-		land = New FlxSprite(0, 184, "overdoseEyePNG")
+		land = New FlxSprite(120, 48, "overdoseEyePNG")
 
 		Add(land)
 		
@@ -91,66 +93,51 @@ Public
     End
     
 	Method Update:Void()
-		If (FlxG.Mouse.Pressed()) Then
-			canon.FireFromAngle(-45)
-		Endif
+		Super.Update()
+		
 		If (FlxG.Mouse.Pressed()) Then
 			canon.FireAtMouse()
 		Endif
 			
-		If (FlxG.Keys.ONE) Then
+		If (FlxG.Keys.One) Then
 			damageSize = 2
-		Else If (FlxG.keys.TWO) Then
+		Else If (FlxG.Keys.Two) Then
 			damageSize = 4
-		Else If (FlxG.keys.THREE) Then
+		Else If (FlxG.Keys.Three) Then
 			damageSize = 8
 		Endif
-		
-		FlxG.Overlap(canon.group, land, ErasePartOfLand)
-		
-		Super.Update()
-	End Method
-	
-	Method ErasePartOfLand:Void(bullet:FlxObject, theLand:FlxObject)
-		if (FlxCollision.pixelPerfectCheck(bullet as FlxSprite, land))
-		{
-			//	Work out where into the image the bullet has landed
-			var offsetX:int = bullet.x - land.x;
-			var offsetY:int = bullet.y - land.y;
-			
-			//	Grab the BitmapData from the image, so we can modify it
-			var temp:BitmapData = land.pixels;
-			
-			//	This erases a rect area of the image - but you could also draw a circle into it, or anything really
-			temp.fillRect(new Rectangle(offsetX, offsetY, damageSize, damageSize), 0x0);
-			
-			//	Write it back again
-			land.pixels = temp;
-			
-			//	And remove the bullet - you don't have to do this, it can make some interest effects if you don't!
-			bullet.kill();
-	End Method
-	
-End Class
+				
+		FlxG.Overlap(canon.group, land, self)		
 
-Class ErasePartOfLand Implements FlxOverlapNotifyListener
+	End Method
+	
 	Method OnOverlapNotify:Void(object1:FlxObject, object2:FlxObject)
-		If (FptFlxCollision.PixelPerfectCheck(FlxSprite(object1) , object2))
+		Local bullet:FlxSprite = FlxSprite(object1)
+		If (FlxCollision.PixelPerfectCheck(bullet , land))
 			'//	Work out where into the image the bullet has landed
-			var offsetX:int = object1.x - object2.x;
-			var offsetY:int = object1.y - object2.y;
+			Local offsetX:int = bullet.x - land.x;
+			Local offsetY:int = bullet.y - land.y;
 			
 			'//	Grab the BitmapData from the image, so we can modify it
-			var temp:BitmapData = object2.pixels;
+			Local temp:Image = land.Pixels
+			Local pixels:Int[] = New Int[damageSize * damageSize]
+			For Local i:Int = 0 Until damageSize
+				For Local j:Int = 0 Until damageSize
+					pixels[i] = $00000000
+				Next
+			Next
 			
 			'//	This erases a rect area of the image - but you could also draw a circle into it, or anything really
-			temp.fillRect(new Rectangle(offsetX, offsetY, damageSize, damageSize), 0x0);
+			temp.WritePixels(pixels, offsetX, offsetY, damageSize, damageSize)
+			'temp.fillRect(new Rectangle(offsetX, offsetY, damageSize, damageSize), 0x0);
 			
 			'//	Write it back again
-			object2.Pixels = temp
+			land.Pixels = temp
 			
 			'//	And remove the bullet - you don't have to do this, it can make some interest effects if you don't!
-			object1.Kill()
+			bullet.Kill()
 		Endif		
 	End Method
+
 End Class
+

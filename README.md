@@ -13,22 +13,30 @@ Ported Classes
 ------------
 The following classes are available in the latest version:
 
-FptFlxColor
+FlxExtendedColor (FlxColor)
 
-FptFlxControl (includes FptFlxControlHandler)
+FlxControl (includes FlxControlHandler)
 
-FptFlxMath
+FlxMath
 
-FptFlxVelocity
+FlxVelocity
 
-FptFlxWeapon
+FlxWeapon
 
-FptFlxDisplay
+FlxDisplay
 
-FptFlxCollision
+FlxCollision
+
+FlxExtendedRect
+
+FlxExtendedSprite
+
+FlxMouseControl
+
+FlxDelay
 
 Requirements
 ------------
 
-Monkey v53 or higher
+Monkey v63 or higher
 

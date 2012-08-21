@@ -23,6 +23,9 @@ Class Objects Extends FlxGame
 	Method New()		
 		Super.New(320, 288, GetClass("ControlTest2"), 1, 60, 60)
 		
+		Print ControlTest2.title
+		Print ControlTest2.description
+		Print ControlTest2.instructions		
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -74,21 +77,21 @@ Public
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		
 		'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
-		If (FlxG.GetPlugin(ClassInfo(FptFlxControl.ClassObject)) = Null) Then
-			FlxG.AddPlugin(New FptFlxControl())
+		If (FlxG.GetPlugin(ClassInfo(FlxControl.ClassObject)) = Null) Then
+			FlxG.AddPlugin(New FlxControl())
 		Endif
 		
 		'//	Control the sprite
-		FptFlxControl.Create(player, FptFlxControlHandler.MOVEMENT_ACCELERATES, FptFlxControlHandler.STOPPING_DECELERATES, 1, true, false)
-		FptFlxControl.player1.SetCursorControl(false, false, true, true)
-		FptFlxControl.player1.SetJumpButton(KEY_SPACE, FptFlxControlHandler.KEYMODE_PRESSED, 200, FlxObject.FLOOR, 250, 200)
+		FlxControl.Create(player, FlxControlHandler.MOVEMENT_ACCELERATES, FlxControlHandler.STOPPING_DECELERATES, 1, true, false)
+		FlxControl.player1.SetCursorControl(false, false, true, true)
+		FlxControl.player1.SetJumpButton(KEY_SPACE, FlxControlHandler.KEYMODE_PRESSED, 200, FlxObject.FLOOR, 250, 200)
 		
 		'//	Because we are using the MOVEMENT_ACCELERATES type the first value is the acceleration speed of the sprite
 		'//	Think of it as the time it takes to reach maximum velocity. A value of 100 means it would take 1 second. A value of 400 means it would take 0.25 of a second.
-		FptFlxControl.player1.SetMovementSpeed(400, 0, 100, 200, 400, 0)
+		FlxControl.player1.SetMovementSpeed(400, 0, 100, 200, 400, 0)
 		
 		'//	Set a downward gravity of 400px/sec
-		FptFlxControl.player1.SetGravity(0, 400)
+		FlxControl.player1.SetGravity(0, 400)
 		
 		'//	A basic scene for our chick to jump around
 		scene = New ControlTestScene2()
@@ -135,7 +138,7 @@ Public
 	
 	Method Destroy:Void()
 		'//	Important! Clear out the plugin otherwise resources will get messed right up after a while
-		FptFlxControl.Clear()
+		FlxControl.Clear()
 			
 		Super.Destroy()
 	End Method

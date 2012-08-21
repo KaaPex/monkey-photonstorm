@@ -13,7 +13,10 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("ColorTest1"), 1, 60, 60)
+		Super.New(320, 256, GetClass("ColorTest1"), 1, 60, 60)
+		Print ColorTest1.title
+		Print ColorTest1.description
+		Print ColorTest1.instructions	
 		'FlxG.VisualDebug = True
 	End Method
 
@@ -27,16 +30,16 @@ Private
 
 Public
 	'//	Common variables
-	Field title:String = "Colors 1"
-	Field description:String = "Demonstrates FptFlxColor.GetRandomColor"
-	Field instructions:String = "Demonstrates FptFlxColor.GetRandomColor"
+	Global title:String = "Colors 1"
+	Global description:String = "Demonstrates FlxColor.GetRandomColor"
+	Global instructions:String = "Demonstrates FlxColor.GetRandomColor"
 	
 	Method Create:Void()
 '		header = new TestsHeader(instructions);
 '		Add(header);
 		
 		'//	Test specific
-		canvas = New FlxSprite(32, 32).MakeGraphic(580, 380, $ff000000)	
+		canvas = New FlxSprite(32, 32).MakeGraphic(256, 176, $ff000000)	
 		Add(canvas)
 	
 		
@@ -46,7 +49,7 @@ Public
 	
 	Method Update:Void()
 		'//	Draw a randomly coloured box onto the canvas
-		Local rect:FlxSprite = New FlxSprite(FptFlxMath.Rand(32, 580), FptFlxMath.Rand(32, 380)).MakeGraphic(16, 16, FptFlxColor.GetRandomColor(20))
+		Local rect:FlxSprite = New FlxSprite(FlxMath.Rand(2, 236), FlxMath.Rand(2, 156)).MakeGraphic(16, 16, FlxExtendedColor.GetRandomColor(20))
 		Add(rect)
 
 		Super.Update()

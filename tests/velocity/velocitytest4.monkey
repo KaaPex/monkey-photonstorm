@@ -16,7 +16,10 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("VelocityTest4"), 1, 60, 60)
+		Super.New(320, 256, GetClass("VelocityTest4"), 1, 60, 60)
+		Print VelocityTest4.title
+		Print VelocityTest4.description
+		Print VelocityTest4.instructions		
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -40,14 +43,14 @@ Private
 
 Public
 	'//	Common variables
-	Field title:String = "Velocity 1"
-	Field description:String = "Move an FlxObject towards another FlxObject"
-	Field instructions:String = "Click with the mouse to position the green ball"
+	Global title:String = "Velocity 4"
+	Global description:String = "Accelerates one Sprite towards another"
+	Global instructions:String = "Click with the mouse to position the green ball"
 	
 	Method Create:Void()
 '		header = new TestsHeader(instructions);
 '		Add(header);
-		
+		FlxG.Mouse.Show()
 		'//	Test specific
 			
 		red = New FlxSprite(160, 120, "red_ball")
@@ -82,7 +85,7 @@ Public
 			blue.exists = True
 			blue.visible = True
 			
-			FptFlxVelocity.AccelerateTowardsObject(blue, green, 50, 200, 200);
+			FlxVelocity.AccelerateTowardsObject(blue, green, 50, 200, 200);
 		Endif
 	End Method
 End Class

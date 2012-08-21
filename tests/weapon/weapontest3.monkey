@@ -18,7 +18,10 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("WeaponTest3"), 1, 60, 60)
+		Super.New(320, 256, GetClass("WeaponTest3"), 1, 60, 60)
+		Print WeaponTest3.title
+		Print WeaponTest3.description
+		Print WeaponTest3.instructions		
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -33,9 +36,9 @@ Class WeaponTest3 Extends FlxState
 	'//	Test specific variables
 Private 
 	
-	Field player:FlxSprite
-	Field lazer:FptFlxWeapon
-	Field control:FptFlxControl
+	Global player:FlxSprite
+	Global lazer:FlxWeapon
+	Global control:FlxControl
 	
 '	Field header:TestsHeader
 
@@ -56,7 +59,7 @@ Public
 		player = New FlxSprite(160, 200, "xenon2ShipPNG")
 		
 		'//	Creates our weapon. We'll call it "lazer" and link it to the x/y coordinates of the player sprite
-		lazer = new FptFlxWeapon("lazer", player, "x", "y")
+		lazer = new FlxWeapon("lazer", player, "x", "y")
 		
 		'//	We're creating 20 animated bullets from the sprite sheet xenon2BombPNG. The frame width and height is 8x16.
 		'//	The animation goes through frames 1,2,3,4 And Then loops at 30fps.
@@ -65,22 +68,22 @@ Public
 		lazer.MakeAnimatedBullet(20, "xenon2BombPNG", 8, 16, [0, 1, 2, 3], 30, True, 12, 6)
 		
 		'//	Sets the direction and speed the bullets will be fired in
-		lazer.SetBulletDirection(FptFlxWeapon.BULLET_UP, 180)
+		lazer.SetBulletDirection(FlxWeapon.BULLET_UP, 180)
 
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		
 		'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
-		If (FlxG.GetPlugin(ClassInfo(FptFlxControl.ClassObject)) = Null) Then
-			FlxG.AddPlugin(New FptFlxControl())
+		If (FlxG.GetPlugin(ClassInfo(FlxControl.ClassObject)) = Null) Then
+			FlxG.AddPlugin(New FlxControl())
 		Endif
 		
-		FptFlxControl.Create(player, FptFlxControlHandler.MOVEMENT_INSTANT, FptFlxControlHandler.STOPPING_INSTANT, 1, False, False)
-		FptFlxControl.player1.SetMovementSpeed(200, 0, 200, 0)
-		FptFlxControl.player1.SetCursorControl(False, False, True, True)
-		FptFlxControl.player1.SetBounds(16, 200, 280, 16)
+		FlxControl.Create(player, FlxControlHandler.MOVEMENT_INSTANT, FlxControlHandler.STOPPING_INSTANT, 1, False, False)
+		FlxControl.player1.SetMovementSpeed(200, 0, 200, 0)
+		FlxControl.player1.SetCursorControl(False, False, True, True)
+		FlxControl.player1.SetBounds(16, 200, 280, 16)
 		
 		'//	This is what fires the actual bullets (pressing SPACE) at a rate of 1 bullet per 250 ms, hooked to the lazer.fire method
-		FptFlxControl.player1.SetFireButton(KEY_SPACE, FptFlxControlHandler.KEYMODE_PRESSED, 250, lazer, ClassInfo(FptFlxWeapon.ClassObject).GetMethod("Fire",[]))
+		FlxControl.player1.SetFireButton(KEY_SPACE, FlxControlHandler.KEYMODE_PRESSED, 250, lazer, ClassInfo(FlxWeapon.ClassObject).GetMethod("Fire",[]))
 
 		'//	The group which contains all of the bullets should be added so it is displayed
 		Add(lazer.group)

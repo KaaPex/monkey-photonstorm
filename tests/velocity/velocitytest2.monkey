@@ -15,7 +15,10 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(640, 480, GetClass("VelocityTest2"), 1, 60, 60)
+		Super.New(320, 256, GetClass("VelocityTest2"), 1, 60, 60)
+		Print VelocityTest2.title
+		Print VelocityTest2.description
+		Print VelocityTest2.instructions
 		FlxG.VisualDebug = True
 	End Method
 	
@@ -38,14 +41,14 @@ Private
 
 Public
 	'//	Common variables
-	Field title:String = "Velocity 2"
-	Field description:String = "Get the angle between 2 FlxObjects"
-	Field instructions:String = ""
+	Global title:String = "Velocity 2"
+	Global description:String = "Get the angle between 2 FlxObjects"
+	Global instructions:String = ""
 	
 	Method Create:Void()
 '		header = new TestsHeader(instructions);
 '		Add(header);
-		
+		FlxG.Mouse.Show()
 		'//	Test specific
 			
 		red = New FlxSprite(160, 120, "red_ball")
@@ -63,9 +66,9 @@ Public
 		green.x = FlxG.Mouse.screenX
 		green.y = FlxG.Mouse.screenY
 			
-		Local a:Float = FptFlxVelocity.AngleBetween(red, green)
+		Local a:Float = FlxVelocity.AngleBetween(red, green)
 		
-		FlxG.Log("Angle between red and green: " + Int(FptFlxMath.AsDegrees(a))	)
+		FlxG.Log("Angle between red and green: " + Int(FlxMath.AsDegrees(a))	)
 		'header.instructions.text = "Angle between red and green: " + Math.round(FlxMath.asDegrees(a));
 	End Method
 End Class

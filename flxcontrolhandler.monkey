@@ -18,8 +18,8 @@
 Strict
 Import reflection
 Import flixel
-Import fptflxmath
-Import fptflxvelocity
+Import flxmath
+Import flxvelocity
 
 
 ''/**
@@ -38,7 +38,7 @@ Import fptflxvelocity
 '* Variable gravity (based on height, the higher the stronger the effect)
 ''*/
 
-Class FptFlxControlHandler
+Class FlxControlHandler
 	'//	Used by the FlxControl plugin
 Public 
 	Field enabled:Bool = False
@@ -754,7 +754,7 @@ Private
 			Endif
 
 			If (_enforceAngleLimits) Then
-				_entity.angle = FptFlxMath.AngleLimit(_entity.angle, _minAngle, _maxAngle)
+				_entity.angle = FlxMath.AngleLimit(_entity.angle, _minAngle, _maxAngle)
 			Endif
 		Endif
 		
@@ -774,7 +774,7 @@ Private
 			Endif
 			
 			If (_enforceAngleLimits) Then
-				_entity.angle = FptFlxMath.AngleLimit(_entity.angle, _minAngle, _maxAngle)
+				_entity.angle = FlxMath.AngleLimit(_entity.angle, _minAngle, _maxAngle)
 			Endif
 		Endif
 		
@@ -787,7 +787,7 @@ Private
 		If (FlxG.Keys.Pressed(_thrustKey)) Then
 			move = True
 			
-			Local motion:FlxPoint = FptFlxVelocity.VelocityFromAngle(_entity.angle, _thrustSpeed)
+			Local motion:FlxPoint = FlxVelocity.VelocityFromAngle(_entity.angle, _thrustSpeed)
 			
 			If (_movement = MOVEMENT_INSTANT) Then
 				_entity.velocity.x = motion.x
@@ -815,7 +815,7 @@ Private
 		If (FlxG.Keys.Pressed(_reverseKey)) Then
 			move = True
 			
-			Local motion:FlxPoint = FptFlxVelocity.VelocityFromAngle(_entity.angle, _reverseSpeed)
+			Local motion:FlxPoint = FlxVelocity.VelocityFromAngle(_entity.angle, _reverseSpeed)
 			
 			If (_movement = MOVEMENT_INSTANT) Then
 				_entity.velocity.x = -motion.x
