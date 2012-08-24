@@ -1349,9 +1349,13 @@ Public
 	'* @param	allowRight	Enable the right (E) key
 	 '*/
 	Method SetAnalogOnScreenControl:Void(size:Int = 50,isDigital:Bool = False, allowUp:Bool = True, allowDown:Bool = True, allowLeft:Bool = True, allowRight:Bool = True)
-		'#If TARGET <> "ios" And TARGET <> "android" Then
-		'	Return
-		'#Endif	
+		#If TARGET <> "ios" And TARGET <> "android" And TARGET <> "xna" Then
+			Return
+		#Endif
+			
+		If (Not FlxG.Mobile) Then 
+			Return
+		Endif	
 		
 		_up = allowUp
 		_down = allowDown
