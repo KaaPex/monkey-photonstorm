@@ -137,6 +137,7 @@ Private
 	
 	'// Analog On Screen Control
 	Field _analogControl:Bool = False
+	Field _digitalControl:Bool = False
 	Field _analogControlSize:Int = 50
 	Field _onScreenBase:FlxSprite = Null
 	Field _onScreenKnob:FlxExtendedSprite = Null
@@ -673,7 +674,21 @@ Private
 			
 			If ( (dx > 1 Or dy > 1) And _onScreenKnob.isPressed) Then
 				Local angel:Float = FlxVelocity.AngleBetweenPoints(b, a, True)
-
+		
+				If (_digitalControl) Then
+					If (angel > -40 And angel < 40) Then 'Move right
+						angel = 0
+					Else If (angel > -130 And angel < -50 ) 'move Up
+						angel = -90
+					Else If (angel < -140 Or angel > 140) 'move left
+						angel = 180
+					Else If (angel > 50 And angel < 130) 'move down
+						angel = 90
+					Else 
+						Return False	
+					Endif
+				Endif
+		
 				If (angel > -80 And angel < 80 And key = _rightKey) Then 'Move right
 					Return True
 				Else If (angel > -170 And angel < -10 And key = _upKey ) 'move Up
@@ -1057,7 +1072,7 @@ Public
 			Endif
 		Else
 			Local movedX:Bool = False
-			Local movedY:Bool = False
+			Local movedY:Bool = False		
 			
 			If (_up) Then
 				movedY = MoveUp()
@@ -1101,6 +1116,7 @@ Public
 				_walkSound.Stop()
 			Endif
 		Endif
+
 	End Method
 	
 	'/**
@@ -1332,15 +1348,24 @@ Public
 	'* @param	allowLeft	Enable the left (O) key
 	'* @param	allowRight	Enable the right (E) key
 	 '*/
-	Method SetAnalogOnScreenControl:Void(size:Int = 50, allowUp:Bool = True, allowDown:Bool = True, allowLeft:Bool = True, allowRight:Bool = True)
-		#If TARGET <> "ios" And TARGET <> "android" Then
-			Return
-		#Endif	
+	Method SetAnalogOnScreenControl:Void(size:Int = 50,isDigital:Bool = False, allowUp:Bool = True, allowDown:Bool = True, allowLeft:Bool = True, allowRight:Bool = True)
+		'#If TARGET <> "ios" And TARGET <> "android" Then
+		'	Return
+		'#Endif	
 		
 		_up = allowUp
 		_down = allowDown
 		_left = allowLeft
 		_right = allowRight
+		
+		_digitalControl = isDigital
+		If (Not allowUp And Not allowDown) Then
+			_onScreenKnob.SetDragLock(true, false)
+		Endif
+		
+		If (Not allowLeft And Not allowRight) Then
+			_onScreenKnob.SetDragLock(false, true)
+		Endif
 		
 		_analogControlSize = size
 		

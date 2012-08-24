@@ -71,8 +71,9 @@ Public
 		
 		FlxControl.Create(player, FlxControlHandler.MOVEMENT_INSTANT, FlxControlHandler.STOPPING_INSTANT,,,,True)
 		FlxControl.player1.SetStandardSpeed(100, False)
-		FlxControl.player1.SetOnScreenControlBase()'sets grathics and position
-		FlxControl.player1.SetAnalogOnScreenControl()'init onscreen controle
+		FlxControl.player1.SetOnScreenControlBase(10,0)'sets grathics and position
+		'FlxControl.player1.SetAnalogOnScreenControl()'init analog onscreen control
+		FlxControl.player1.SetAnalogOnScreenControl(,True)'init digital onscreen control
 		
 		'//	setStandardSpeed is a special short-cut function, you can get more control (and the same result) by calling this instead:
 		'//FlxControl.player1.setMovementSpeed(100, 100, 100, 100)
