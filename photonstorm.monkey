@@ -6,7 +6,8 @@ Import flxvelocity
 Import flxdisplay
 Import flxweapon
 Import flxcontrolhandler
+Import flxextendedsprite
 Import flxcontrol
 Import flxmousecontrol
-Import flxextendedsprite
 Import flxdelay
+Import flxgridoverlay

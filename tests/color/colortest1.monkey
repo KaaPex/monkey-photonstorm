@@ -1,7 +1,11 @@
 Strict
+Import "../assets/suite/hud.png"
+
 Import mojo
 Import flixel
 Import flixel.plugin.photonstorm
+Import flixel.plugin.photonstorm.tests.testsheader
+
 #REFLECTION_FILTER="color*|flixel*"
 
 'import tests.TestsHeader;
@@ -19,6 +23,10 @@ Class Objects Extends FlxGame
 		Print ColorTest1.instructions	
 		'FlxG.VisualDebug = True
 	End Method
+	
+	Method OnContentInit:Void()
+		FlxAssetsManager.AddImage("hudPNG", "hud.png")
+	End Method	
 
 End Class
 
@@ -26,7 +34,7 @@ Class ColorTest1 Extends FlxState
 	'//	Test specific variables
 Private 
 	Field canvas:FlxSprite
-'	Field header:TestsHeader
+	Field header:TestsHeader
 
 Public
 	'//	Common variables
@@ -35,21 +43,21 @@ Public
 	Global instructions:String = "Demonstrates FlxColor.GetRandomColor"
 	
 	Method Create:Void()
-'		header = new TestsHeader(instructions);
-'		Add(header);
-		
+		header = New TestsHeader(instructions)
+		Add(header)
+		FlxG.Mouse.Show()
 		'//	Test specific
 		canvas = New FlxSprite(32, 32).MakeGraphic(256, 176, $ff000000)	
 		Add(canvas)
 	
 		
 		'//	Header overlay
-		'add(header.overlay);
+		Add(header.overlay)
 	End Method
 	
 	Method Update:Void()
 		'//	Draw a randomly coloured box onto the canvas
-		Local rect:FlxSprite = New FlxSprite(FlxMath.Rand(2, 236), FlxMath.Rand(2, 156)).MakeGraphic(16, 16, FlxExtendedColor.GetRandomColor(20))
+		Local rect:FlxSprite = New FlxSprite(FlxMath.Rand(32, 256), FlxMath.Rand(32, 176)).MakeGraphic(16, 16, FlxExtendedColor.GetRandomColor(20))
 		Add(rect)
 
 		Super.Update()

@@ -40,27 +40,27 @@ Class FlxControl Extends FlxBasic
 	 '* @return	The new FlxControlHandler
 	 '*/
 Public 
-	Function Create:FlxControlHandler(source:FlxSprite, movementType:Int, stoppingType:Int, player:Int = 1, updateFacing:Bool = False, enableArrowKeys:Bool = True)
+	Function Create:FlxControlHandler(source:FlxSprite, movementType:Int, stoppingType:Int, player:Int = 1, updateFacing:Bool = False, enableArrowKeys:Bool = True, enableAnalogControl:Bool = False)
 		Local result:FlxControlHandler
 		
 		If (player = 1) Then
-			player1 = New FlxControlHandler(source, movementType, stoppingType, updateFacing, enableArrowKeys)
+			player1 = New FlxControlHandler(source, movementType, stoppingType, updateFacing, enableArrowKeys, enableAnalogControl)
 			_members.AddLast(player1)
 			result = player1
 		Else If (player = 2) Then
-			player2 = New FlxControlHandler(source, movementType, stoppingType, updateFacing, enableArrowKeys)
+			player2 = New FlxControlHandler(source, movementType, stoppingType, updateFacing, enableArrowKeys, enableAnalogControl)
 			_members.AddLast(player2)
 			result = player2
 		Else If (player = 3) Then
-			player3 = New FlxControlHandler(source, movementType, stoppingType, updateFacing, enableArrowKeys)
+			player3 = New FlxControlHandler(source, movementType, stoppingType, updateFacing, enableArrowKeys, enableAnalogControl)
 			_members.AddLast(player3)
 			result = player3
 		Else If (player = 4) Then
-			player4 = New FlxControlHandler(source, movementType, stoppingType, updateFacing, enableArrowKeys)
+			player4 = New FlxControlHandler(source, movementType, stoppingType, updateFacing, enableArrowKeys, enableAnalogControl)
 			_members.AddLast(player4)
 			result = player4
 		Else
-			Local newControlHandler:FlxControlHandler = New FlxControlHandler(source, movementType, stoppingType, updateFacing, enableArrowKeys)
+			Local newControlHandler:FlxControlHandler = New FlxControlHandler(source, movementType, stoppingType, updateFacing, enableArrowKeys, enableAnalogControl)
 			_members.AddLast(newControlHandler)
 			result = newControlHandler
 		Endif

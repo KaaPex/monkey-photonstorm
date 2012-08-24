@@ -20,6 +20,7 @@ Import flixel
 Import flxmousecontrol
 Import flxcollision
 Import basetypes.mousespring
+Import basetypes.pointspring
 
 '/**
  '* An enhanced FlxSprite that is capable of receiving mouse clicks, being dragged and thrown, mouse springs, gravity and other useful things
@@ -158,13 +159,24 @@ Public
 		Private Field _snapY:Int
 		
 		'/**
+		 '* Is this sprite using a point spring?
+		 '* @default false
+		 '*/
+		Public Field hasPointSpring:Bool = False
+		
+		'/**
+		 '* The PointSpring object which is used to tie this sprite to the point
+		 '*/
+		Public Field pointSpring:PointSpring
+		
+		'/**
 		 '* Is this sprite using a mouse spring?
 		 '* @default false
 		 '*/
 		Public Field hasMouseSpring:Bool = False
 		
 		'/**
-		 '* Will the Mouse Spring be active always (false) or only when pressed (true)
+		 '* Will the Spring be active always (false) or only when pressed (true)
 		 '* @default true
 		 '*/
 		Public Field springOnPressed:Bool = True
@@ -392,6 +404,47 @@ Public
 		End Method
 		
 		'/**
+		 '* Adds a simple spring between the mouse and this Sprite. The spring can be activated either when the mouse is pressed (default), or enabled all the time.
+		 '* Note that nearly always the Spring will over-ride any other motion setting the sprite has (like velocity or gravity)
+		 '* 
+		 '* @param	point				The Point of the spring
+		 '* @param	onPressed			true if the spring should only be active when the mouse is pressed down on this sprite
+		 '* @param	retainVelocity		true to retain the velocity of the spring when the mouse is released, or false to clear it
+		 '* @param	tension				The tension of the spring, smaller Floats create springs closer to the mouse pointer
+		 '* @param	friction			The friction applied to the spring as it moves
+		 '* @param	gravity				The gravity controls how far "down" the spring hangs (use a negative value for it to hang up!)
+		 '* 
+		 '* @return	The PointSpring object if you wish to perform further chaining on it. Also available via FlxExtendedSprite.pointSpring
+		 '*/ 
+		Method EnablePointSpring:PointSpring(point:FlxPoint = New FlxPoint(0,0), retainVelocity:Bool = False, tension:Float = 0.1, friction:Float = 0.95, gravity:Float = 0)
+			
+			hasPointSpring = True
+			
+			If (pointSpring = Null) Then
+				pointSpring = New PointSpring(Self,point, retainVelocity, tension, friction, gravity)
+			Else
+				pointSpring.tension = tension
+				pointSpring.friction = friction
+				pointSpring.gravity = gravity
+			Endif
+			
+			If (clickable = False And draggable = False) Then
+				clickable = True
+			Endif
+			
+			Return pointSpring
+		End Method
+		
+		'/**
+		 '* Stops the sprite to point spring from being active
+		 '*/
+		Method DisablePointSpring:Void()
+			hasPointSpring = False
+			
+			pointSpring = Null
+		End Method
+		
+		'/**
 		 '* The spring x coordinate in game world space. Consists of sprite.x + springOffsetX
 		 '*/
 		Method SpringX:Int() Property
@@ -431,6 +484,10 @@ Public
 						mouseSpring.Reset()
 					Endif
 				Endif
+			Endif
+			
+			If (hasPointSpring) Then
+				pointSpring.Update()
 			Endif
 			
 			Super.Update()

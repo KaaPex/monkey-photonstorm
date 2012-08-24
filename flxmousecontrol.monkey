@@ -156,6 +156,7 @@ Private
 	 '* Internal function used to release the click / drag targets and reset the mouse state
 	 '*/
 	Method ReleaseMouse:Void()
+
 		'//	Mouse is no longer down, so tell the click target it's free - this will also stop dragging if happening
 		clickTarget.MouseReleasedHandler()
 		

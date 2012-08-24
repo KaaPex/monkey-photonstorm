@@ -120,7 +120,7 @@ Private
 			_pause_started = Millisecs()
 			_pausedTimerRunning = True
 		Endif
-		
+
 		If (isRunning And _pausedTimerRunning = False And Millisecs() > _expires) Then
 			Stop()
 		Endif

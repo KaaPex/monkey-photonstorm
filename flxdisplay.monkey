@@ -13,70 +13,72 @@
 '*/
 Strict
 
-import flixel
+Import flixel
+Import flxextendedcolor
 	
 Class FlxDisplay 
+	
+	Function Pad:Void()
+		'//	Pad the sprite out with empty pixels left/right/above/below it
+	End Function
+	
+	Function Flip:Void()
+		'//	mirror / reverse?
+		'//	Flip image data horizontally / vertically without changing the angle
+	End Function
+	#rem
+	'/**
+	 '* Takes two source images (typically from Embedded bitmaps) And puts the resulting image into the output FlxSprite.<br>
+	 '* Note: It assumes the source And mask are the same size. Different sizes may result in undesired results.<br>
+	 '* It works by copying the source image (your picture) into the output sprite. Then it removes all areas of it that do Not<br>
+	 '* have an alpha color value in the mask image. So If you draw a big black circle in your mask with a transparent edge, you'll<br>
+	 '* get a circular image appear. Look at the mask PNG files in the assets/pics folder For examples.
+	 '* 
+	 '* @param	source		The source image. Typically the one with the image / picture / texture in it.
+	 '* @param	mask		The mask To apply. Remember the non-alpha zero areas are the parts that will display.
+	 '* @param	output		The FlxSprite you wish the resulting image To be placed in (will adjust width/height of image)
+	 '* 
+	 '* @Return	The output FlxSprite For those that like chaining
+	 '*/
+	Function AlphaMask:FlxSprite(source:Image, mask:Image, output:FlxSprite)
 
-#rem	
-	public function pad():void
-	{
-		//	Pad the sprite out with empty pixels left/right/above/below it
-	}
+		Local data:Image =  CreateImage(source.Width(),source.Height()) 
+		Local output_data:Int[] = New Int[source.Width()*source.Height()]
+		
+		Local source_data:Int[] = New Int[source.Width()*source.Height()]
+		ReadPixels(source_data,0,0,source.Width(), source.Height())
+
+		Local mask_data:Int[] = New Int[source.Width()*source.Height()]
+		ReadPixels(mask_data,0,0,mask.Width(), mask.Height())
+		
+		For Local i:Int = 0 Until source.Width()*source.Height()
+			output_data[i] = FlxExtendedColor.InterpolateColor(source_data[i], mask_data[i],1,1)			
+		Next
+
+		output.Pixels.WritePixels( output_data,0,0, source.Width(),source.Height()) 
+
+		Return output
+	End Function
 	
-	public function flip():void
-	{
-		//	mirror / reverse?
-		//	Flip image data horizontally / vertically without changing the angle
-	}
-	
-	/**
-	 * Takes two source images (typically from Embedded bitmaps) and puts the resulting image into the output FlxSprite.<br>
-	 * Note: It assumes the source and mask are the same size. Different sizes may result in undesired results.<br>
-	 * It works by copying the source image (your picture) into the output sprite. Then it removes all areas of it that do not<br>
-	 * have an alpha color value in the mask image. So if you draw a big black circle in your mask with a transparent edge, you'll<br>
-	 * get a circular image appear. Look at the mask PNG files in the assets/pics folder for examples.
-	 * 
-	 * @param	source		The source image. Typically the one with the image / picture / texture in it.
-	 * @param	mask		The mask to apply. Remember the non-alpha zero areas are the parts that will display.
-	 * @param	output		The FlxSprite you wish the resulting image to be placed in (will adjust width/height of image)
-	 * 
-	 * @return	The output FlxSprite for those that like chaining
-	 */
-	public static function alphaMask(source:Class, mask:Class, output:FlxSprite):FlxSprite
-	{
-		var data:BitmapData = (new source).bitmapData;
+	'/**
+	 '* Takes the image data from two FlxSprites And puts the resulting image into the output FlxSprite.<br>
+	 '* Note: It assumes the source And mask are the same size. Different sizes may result in undesired results.<br>
+	 '* It works by copying the source image (your picture) into the output sprite. Then it removes all areas of it that do Not<br>
+	 '* have an alpha color value in the mask image. So If you draw a big black circle in your mask with a transparent edge, you'll<br>
+	 '* get a circular image appear. Look at the mask PNG files in the assets/pics folder For examples.
+	 '* 
+	 '* @param	source		The source FlxSprite. Typically the one with the image / picture / texture in it.
+	 '* @param	mask		The FlxSprite containing the mask To apply. Remember the non-alpha zero areas are the parts that will display.
+	 '* @param	output		The FlxSprite you wish the resulting image To be placed in (will adjust width/height of image)
+	 '* 
+	 '* @Return	The output FlxSprite For those that like chaining
+	 '*/
+	Function AlphaMaskFlxSprite:FlxSprite(source:FlxSprite, mask:FlxSprite, output:FlxSprite)
+
 		
-		data.copyChannel((new mask).bitmapData, new Rectangle(0, 0, data.width, data.height), new Point, BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
-		
-		output.pixels = data;
-		
-		return output;
-	}
-	
-	/**
-	 * Takes the image data from two FlxSprites and puts the resulting image into the output FlxSprite.<br>
-	 * Note: It assumes the source and mask are the same size. Different sizes may result in undesired results.<br>
-	 * It works by copying the source image (your picture) into the output sprite. Then it removes all areas of it that do not<br>
-	 * have an alpha color value in the mask image. So if you draw a big black circle in your mask with a transparent edge, you'll<br>
-	 * get a circular image appear. Look at the mask PNG files in the assets/pics folder for examples.
-	 * 
-	 * @param	source		The source FlxSprite. Typically the one with the image / picture / texture in it.
-	 * @param	mask		The FlxSprite containing the mask to apply. Remember the non-alpha zero areas are the parts that will display.
-	 * @param	output		The FlxSprite you wish the resulting image to be placed in (will adjust width/height of image)
-	 * 
-	 * @return	The output FlxSprite for those that like chaining
-	 */
-	public static function alphaMaskFlxSprite(source:FlxSprite, mask:FlxSprite, output:FlxSprite):FlxSprite
-	{
-		var data:BitmapData = source.pixels;
-		
-		data.copyChannel(mask.pixels, new Rectangle(0, 0, source.width, source.height), new Point, BitmapDataChannel.ALPHA, BitmapDataChannel.ALPHA);
-		
-		output.pixels = data;
-		
-		return output;
-	}
-#End	
+		Return output;
+	End Function
+	#End
 	'/**
 	 '* Checks the x/y coordinates of the source FlxSprite and keeps them within the area of 0, 0, FlxG.width, FlxG.height (i.e. wraps it around the screen)
 	 '* 

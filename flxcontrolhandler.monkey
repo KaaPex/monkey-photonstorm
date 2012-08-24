@@ -17,10 +17,13 @@
 ''*/
 Strict
 Import reflection
+Import monkey.math
 Import flixel
 Import flxmath
 Import flxvelocity
-
+Import flxextendedsprite
+Import "./data/onscreen_control_base.png"
+Import "./data/onscreen_control_knob.png"
 
 ''/**
 '* Makes controlling an FlxSprite with the keyboard a LOT easier and quicker to set-up!<br>
@@ -132,6 +135,12 @@ Private
 	Field _walkSound:FlxSound = Null
 	Field _thrustSound:FlxSound = Null
 	
+	'// Analog On Screen Control
+	Field _analogControl:Bool = False
+	Field _analogControlSize:Int = 50
+	Field _onScreenBase:FlxSprite = Null
+	Field _onScreenKnob:FlxExtendedSprite = Null
+	
 	'//	Helpers
 Public 
 	Field isPressedUp:Bool = False
@@ -139,6 +148,8 @@ Public
 	Field isPressedLeft:Bool = False
 	Field isPressedRight:Bool = False
 	
+	'// Analog On Screen Control
+	Field analogOnScreenControl:FlxGroup
 	'/**
 	'* The "Instant" Movement Type means the sprite will move at maximum speed instantly, and will not "accelerate" (or speed-up) before reaching that speed.
 	 '*/
@@ -205,10 +216,12 @@ Public
 	'* @param	stoppingType	Set to STOPPING_INSTANT, STOPPING_DECELERATES or STOPPING_NEVER
 	'* @param	updateFacing	If true it sets the FlxSprite.facing value to the direction pressed (default false)
 	'* @param	enableArrowKeys	If true it will enable all arrow keys (default) - see setCursorControl for more fine-grained control
+	'* @param	onscreenBase 	The Image you want to use as base of Analog On Screen Control
+	'* @param	onscreenKnob 	The Image you want to use as knob of Analog On Screen Control
 	'* 
 	'* @see		setMovementSpeed
 	 '*/
-	Method New(source:FlxSprite, movementType:Int, stoppingType:Int, updateFacing:Bool = False, enableArrowKeys:Bool = True)
+	Method New(source:FlxSprite, movementType:Int, stoppingType:Int, updateFacing:Bool = False, enableArrowKeys:Bool = True, enableAnalogControl:Bool = False )
 		_entity = source
 		
 		_movement = movementType
@@ -232,6 +245,17 @@ Public
 			SetCursorControl()
 		Endif
 		
+		If (enableAnalogControl) Then
+			FlxAssetsManager.AddImage("onscreen_control_base","onscreen_control_base.png")
+			FlxAssetsManager.AddImage("onscreen_control_knob","onscreen_control_knob.png")
+			'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
+			If (FlxG.GetPlugin(ClassInfo(FlxMouseControl.ClassObject)) = Null) Then
+				FlxG.AddPlugin(New FlxMouseControl())
+			Endif
+			
+			_analogControl = True			
+		Endif
+
 		enabled = True
 	End Method
 	
@@ -640,10 +664,36 @@ Public
 	End Method
 	
 Private 
+	Method CheckKeyPressed:Bool(key:Int)
+		If (analogOnScreenControl) Then
+			Local a:FlxPoint = New FlxPoint(_onScreenKnob.x + _onScreenKnob.width/2, _onScreenKnob.y + _onScreenKnob.height/2)
+			Local b:FlxPoint = New FlxPoint(_onScreenBase.x + _onScreenBase.width/2, _onScreenBase.y + _onScreenBase.height/2)
+			Local dx:Int = Abs(a.x - b.x)
+			Local dy:Int = Abs(a.y - b.y)
+			
+			If ( (dx > 1 Or dy > 1) And _onScreenKnob.isPressed) Then
+				Local angel:Float = FlxVelocity.AngleBetweenPoints(b, a, True)
+
+				If (angel > -80 And angel < 80 And key = _rightKey) Then 'Move right
+					Return True
+				Else If (angel > -170 And angel < -10 And key = _upKey ) 'move Up
+					Return True
+				Else If (angel < -100 Or angel > 100 And key = _leftKey) 'move left
+					Return True
+				Else If (angel > 10 And angel < 170 And key = _downKey) 'move down
+					Return True
+				Endif
+			Endif
+		Else
+			Return FlxG.Keys.Pressed(key)
+		Endif
+		Return false
+	End Method
+	
 	Method MoveUp:Bool()
 		Local move:Bool = False
 		
-		If (FlxG.Keys.Pressed(_upKey)) Then
+		If (CheckKeyPressed(_upKey)) Then
 			move = True
 			isPressedUp = True
 			
@@ -668,7 +718,7 @@ Private
 	Method MoveDown:Bool()
 		Local move:Bool = False
 		
-		If (FlxG.Keys.Pressed(_downKey)) Then
+		If (CheckKeyPressed(_downKey)) Then
 			move = True
 			isPressedDown = True
 			
@@ -694,7 +744,7 @@ Private
 	Method MoveLeft:Bool()
 		Local move:Bool = False
 		
-		If (FlxG.Keys.Pressed(_leftKey)) Then
+		If (CheckKeyPressed(_leftKey)) Then
 			move = True
 			isPressedLeft = True
 			
@@ -719,7 +769,7 @@ Private
 	Method MoveRight:Bool()
 		Local move:Bool = False
 		
-		If (FlxG.Keys.Pressed(_rightKey)) Then
+		If (CheckKeyPressed(_rightKey)) Then
 			move = True
 			isPressedRight = True
 			
@@ -1229,6 +1279,76 @@ Public
 		_downKey = KEY_O
 		_leftKey = KEY_A
 		_rightKey = KEY_E
+	End Method
+	
+	Method SetOnScreenControlBase:Void(X:Float = 0, Y:Float = 0, simpleGraphic:String = "")	
+		If (simpleGraphic.Length() = 0)
+			simpleGraphic = "onscreen_control_base"
+		Endif		
+		_onScreenBase = New FlxExtendedSprite(X,Y,simpleGraphic)
+	
+		_onScreenBase.scale.x = _analogControlSize/_onScreenBase.width
+		_onScreenBase.scale.y = _analogControlSize/_onScreenBase.height
+		_onScreenBase.width = _analogControlSize
+		_onScreenBase.height = _analogControlSize			
+		_onScreenBase.CenterOffsets()
+		_onScreenBase.x = X
+		If (Y = 0) Then
+			_onScreenBase.y = FlxG.Height - _analogControlSize
+		Else
+			_onScreenBase.y = Y
+		Endif	
+		SetOnScreenControlKnob()
+	End Method
+	
+	Method SetOnScreenControlKnob:Void(simpleGraphic:String = "")
+		
+		If (simpleGraphic.Length() = 0)
+			simpleGraphic = "onscreen_control_knob"
+		Endif
+		
+		_onScreenKnob = New FlxExtendedSprite(0,0,simpleGraphic)
+
+		_onScreenKnob.scale.x = _analogControlSize/2/_onScreenKnob.width
+		_onScreenKnob.scale.y = _analogControlSize/2/_onScreenKnob.height
+		_onScreenKnob.width = _analogControlSize/2
+		_onScreenKnob.height = _analogControlSize/2
+		_onScreenKnob.frameWidth = _onScreenKnob.width
+		_onScreenKnob.frameHeight = _onScreenKnob.height
+		_onScreenKnob.SetOriginToCorner()
+		_onScreenKnob.x = _onScreenBase.x + _onScreenBase.width/2 - _onScreenKnob.width/2
+		_onScreenKnob.y = _onScreenBase.y + _onScreenBase.height/2 - _onScreenKnob.height/2
+				
+		_onScreenKnob.EnableMouseDrag(True, True, 255,, _onScreenBase)
+		_onScreenKnob.EnablePointSpring(New FlxPoint(_onScreenKnob.x,_onScreenKnob.y)) 
+	End Method
+	
+	'/**
+	'* Enables Analog Onscreen Controls. Can be set on a per-key basis. Useful if you only want to allow a few keys.<br>
+	'* Only for IOS and Android
+	'* 
+	'* @param	allowUp		Enable the up (COMMA) key
+	'* @param	allowDown	Enable the down (A) key
+	'* @param	allowLeft	Enable the left (O) key
+	'* @param	allowRight	Enable the right (E) key
+	 '*/
+	Method SetAnalogOnScreenControl:Void(size:Int = 50, allowUp:Bool = True, allowDown:Bool = True, allowLeft:Bool = True, allowRight:Bool = True)
+		#If TARGET <> "ios" And TARGET <> "android" Then
+			Return
+		#Endif	
+		
+		_up = allowUp
+		_down = allowDown
+		_left = allowLeft
+		_right = allowRight
+		
+		_analogControlSize = size
+		
+		If (_onScreenBase <> Null Or _onScreenKnob <> Null) Then
+			analogOnScreenControl = New FlxGroup(2)
+			analogOnScreenControl.Add(_onScreenBase)
+			analogOnScreenControl.Add(_onScreenKnob)
+		Endif
 	End Method
 	
 	'/**

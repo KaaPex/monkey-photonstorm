@@ -9,8 +9,6 @@ Import flixel
 
 Import flixel.plugin.photonstorm
 Import controltestscene1
-Import flixel.plugin.photonstorm.tests.testsheader
-Import "../assets/suite/hud.png"
 
 #REFLECTION_FILTER="control*|flixel.flx*|flixel.plugin*"
 
@@ -35,7 +33,6 @@ Class Objects Extends FlxGame
 		FlxAssetsManager.AddString("scifiMap1CSV", "mapCSV_SciFi_Map1.csv")
 		FlxAssetsManager.AddImage("ufoPNG", "ufo.png")
 		FlxAssetsManager.AddImage("scifiTilesPNG", "sci-fi-tiles.png")
-		FlxAssetsManager.AddImage("hudPNG", "hud.png")
 	End Method	
 
 End Class
@@ -47,17 +44,17 @@ Private
 	Field player:FlxSprite
 	Field scene:ControlTestScene1
 	
-	Field header:TestsHeader
+'	Field header:TestsHeader
 
 Public
 	'//	Common variables
-	Global title:String = "Controls 1"
-	Global description:String = "Basic cursor key movement"
-	Global instructions:String = "Move with the cursor / arrow keys"
+	Global title:String = "Controls 9"
+	Global description:String = "Analog Onscreen Control"
+	Global instructions:String = "Move with the analog cursor? works only on IOS and Android"
 	
 	Method Create:Void()
-		header = new TestsHeader(instructions);
-		Add(header);
+'		header = new TestsHeader(instructions);
+'		Add(header);
 		FlxG.Mouse.Show()
 		'//	Test specific
 			
@@ -74,6 +71,8 @@ Public
 		
 		FlxControl.Create(player, FlxControlHandler.MOVEMENT_INSTANT, FlxControlHandler.STOPPING_INSTANT,,,,True)
 		FlxControl.player1.SetStandardSpeed(100, False)
+		FlxControl.player1.SetOnScreenControlBase()'sets grathics and position
+		FlxControl.player1.SetAnalogOnScreenControl()'init onscreen controle
 		
 		'//	setStandardSpeed is a special short-cut function, you can get more control (and the same result) by calling this instead:
 		'//FlxControl.player1.setMovementSpeed(100, 100, 100, 100)
@@ -87,10 +86,10 @@ Public
 		
 		Add(scene)
 		Add(player)
-		Add(FlxControl.player1.analogOnScreenControl)
+		Add(FlxControl.player1.analogOnScreenControl) 'base group of control
 			
 		'//	Header overlay
-		Add(header.overlay)
+		'add(header.overlay);
 	End Method
 	
 	Method Draw:Void()

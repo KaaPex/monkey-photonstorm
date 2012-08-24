@@ -228,6 +228,27 @@ Class FlxVelocity
 			Return ATan2r(dy, dx)
 		Endif
 	End Function
+	
+	'/**
+	 '* Find the angle (in radians) between an FlxPoint and an FlxPoint. The source sprite takes its x/y and origin into account.
+	 '* The angle is calculated in clockwise positive direction (down = 90 degrees positive, right = 0 degrees positive, up = 90 degrees negative)
+	 '* 
+	 '* @param	a			The FlxSprite to test from
+	 '* @param	target		The FlxPoint to angle the FlxSprite towards
+	 '* @param	asDegrees	If you need the value in degrees instead of radians, set to true
+	 '* 
+	 '* @return	Number The angle (in radians unless asDegrees is true)
+	 '*/
+	Function AngleBetweenPoints:Float(a:FlxPoint, target:FlxPoint, asDegrees:Bool = False)
+		Local dx:Float = target.x - a.x
+		Local dy:Float = target.y - a.y
+		
+		If (asDegrees) Then
+			Return FlxMath.AsDegrees(ATan2r(dy, dx))
+		Else
+			Return ATan2r(dy, dx)
+		Endif
+	End Function
 		
 	'/**
 	 '* Find the angle (in radians) between the two FlxSprite, taking their x/y and origin into account.
