@@ -35,6 +35,8 @@ FlxMouseControl
 
 FlxDelay
 
+FlxGridOverlay
+
 Requirements
 ------------
 
