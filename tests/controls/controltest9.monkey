@@ -72,6 +72,7 @@ Public
 		FlxControl.Create(player, FlxControlHandler.MOVEMENT_INSTANT, FlxControlHandler.STOPPING_INSTANT,,,,True)
 		FlxControl.player1.SetStandardSpeed(100, False)
 		FlxControl.player1.SetOnScreenControlBase(10,0)'sets grathics and position
+		FlxControl.player1.SetOnScreenControlKnob()
 		'FlxControl.player1.SetAnalogOnScreenControl()'init analog onscreen control
 		FlxControl.player1.SetAnalogOnScreenControl(,True)'init digital onscreen control
 		

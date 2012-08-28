@@ -1314,7 +1314,7 @@ Public
 		Else
 			_onScreenBase.y = Y
 		Endif	
-		SetOnScreenControlKnob()
+
 	End Method
 	
 	Method SetOnScreenControlKnob:Void(simpleGraphic:String = "")
