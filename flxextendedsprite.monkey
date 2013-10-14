@@ -26,7 +26,9 @@ Import basetypes.pointspring
  '* An enhanced FlxSprite that is capable of receiving mouse clicks, being dragged and thrown, mouse springs, gravity and other useful things
  '*/
 Class FlxExtendedSprite Extends FlxSprite
-Global ClassObject:Object
+		
+	Global __CLASS__:Object
+	
 Public
 		'/**
 		 '* Used by FlxMouseControl when multiple sprites overlap and register clicks, and you need to determine which sprite has priority
@@ -195,6 +197,10 @@ Public
 		 '* By default the spring attaches to the top left of the sprite. To change this location provide a y offset (in pixels)
 		 '*/
 		Public Field springOffsetY:Int
+		
+		Private
+		
+		Field _needClickCheck:Bool
 		
 		'/**
 		 '* Creates a white 8x8 square <code>FlxExtendedSprite</code> at the specified position.
@@ -464,10 +470,16 @@ Public
 		Method Update:Void()
 			If (draggable And isDragged) Then
 				UpdateDrag()
-			Endif
+			EndIf
+			
+			_needClickCheck = False
 			
 			If (isPressed = False And FlxG.Mouse.JustPressed()) Then
-				CheckForClick()
+				If ( Not _clickPixelPerfect And Not _dragPixelPerfect) Then
+					CheckForClick()
+				Else
+					_needClickCheck = True
+				End If
 			Endif
 			
 			If (hasGravity) Then
@@ -491,6 +503,14 @@ Public
 			Endif
 			
 			Super.Update()
+		End Method
+		
+		Method Draw:Void()
+			If (_needClickCheck) Then
+				CheckForClick()
+			End If
+			
+			Super.Draw()
 		End Method
 		
 Private 		

@@ -250,7 +250,7 @@ Public
 			FlxAssetsManager.AddImage("onscreen_control_base","onscreen_control_base.png")
 			FlxAssetsManager.AddImage("onscreen_control_knob","onscreen_control_knob.png")
 			'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
-			If (FlxG.GetPlugin(ClassInfo(FlxMouseControl.ClassObject)) = Null) Then
+			If (FlxG.GetPlugin(FlxMouseControl.__CLASS__) = Null) Then
 				FlxG.AddPlugin(New FlxMouseControl())
 			Endif
 			
