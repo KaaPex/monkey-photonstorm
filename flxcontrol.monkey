@@ -16,7 +16,8 @@ Import flixel
 Import flxcontrolhandler
 
 Class FlxControl Extends FlxBasic
-	Global ClassObject:Object
+	Global __CLASS__:Object
+	
 '//	Quick references
 	Global player1:FlxControlHandler
 	Global player2:FlxControlHandler

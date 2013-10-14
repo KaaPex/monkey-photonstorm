@@ -34,7 +34,7 @@ Import flixel.plugin.photonstorm.flxvelocity
 
 Class FlxWeapon 
 
-Global ClassObject:Object
+	Global __CLASS__:Object
 
 Public
 	'/**

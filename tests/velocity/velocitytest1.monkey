@@ -2,10 +2,12 @@ Strict
 Import mojo
 Import flixel
 Import flixel.plugin.photonstorm
+
 Import "../assets/sprites/red_ball.png"
 Import "../assets/sprites/green_ball.png"
 Import "../assets/sprites/blue_ball.png"
-#REFLECTION_FILTER="velo*|flixel*"
+
+#REFLECTION_FILTER = "velo*"
 
 'import tests.TestsHeader;
 Function Main:Int()
@@ -16,7 +18,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(320, 256, GetClass("VelocityTest1"), 1, 60, 60)
+		Super.New(320, 256, GetClass("VelocityTest1"), 1, 60)
 		Print VelocityTest1.title
 		Print VelocityTest1.description
 		Print VelocityTest1.instructions	

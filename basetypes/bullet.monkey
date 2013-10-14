@@ -66,10 +66,9 @@ Private
 	 '* @param	FrameRate	The speed in frames per second that the animation should play at (e.g. 40 fps).
 	 '* @param	Looped		Whether or not the animation is looped or just plays once.
 	 '*/
-	Method AddAnimation:Void(Name:String, Frames:Int[], FrameRate:Float = 0, Looped:Bool = True)
-		Super.AddAnimation(Name, Frames, FrameRate, Looped)
-		
-		animated = True
+	Method AddAnimation:FlxAnim(Name:String, Frames:Int[], FrameRate:Float = 0, Looped:Bool = True)
+		animated = True		
+		Return Super.AddAnimation(Name, Frames, FrameRate, Looped)
 	End Method
 	
 	Method Fire:Void(fromX:Int, fromY:Int, velX:Int, velY:Int)

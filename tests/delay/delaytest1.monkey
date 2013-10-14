@@ -1,5 +1,4 @@
 Strict
-#TEXT_FILES="*.txt|*.xml|*.json|*.csv"
 
 Import "../assets/sprites/red_ball.png"
 Import "../assets/sprites/green_ball.png"
@@ -9,7 +8,7 @@ Import flixel
 Import monkey.random
 Import flixel.plugin.photonstorm
 
-#REFLECTION_FILTER="delay*|flixel.flx*|flixel.plugin*"
+#REFLECTION_FILTER="delay*"
 
 'import tests.TestsHeader
 Function Main:Int()
@@ -20,7 +19,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()		
-		Super.New(320, 256, GetClass("DelayTest1"), 1, 60, 60)
+		Super.New(320, 256, GetClass("DelayTest1"), 1, 60)
 		
 		Print DelayTest1.title
 		Print DelayTest1.description

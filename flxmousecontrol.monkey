@@ -17,7 +17,7 @@ Import flxmath
 Import flxextendedsprite
 
 Class FlxMouseControl Extends FlxBasic
-	Global ClassObject:Object
+	Global __CLASS__:Object
 	'/**
 	 '* Use with <code>sort()</code> to sort in ascending order.
 	 '*/
@@ -227,8 +227,8 @@ Private Class SortList<T> Extends List<T>
 	Method Compare:Int( lhs:T,rhs:T )
 		Local item1:FlxExtendedSprite = lhs 
 		Local item2:FlxExtendedSprite = rhs
-		Local value1:Float = UnboxFloat(ClassInfo(item1.ClassObject).GetField(FlxMouseControl.sortIndex).GetValue(item1))
-		Local value2:Float = UnboxFloat(ClassInfo(item2.ClassObject).GetField(FlxMouseControl.sortIndex).GetValue(item2))
+		Local value1:Float = UnboxFloat(item1.GetClassInfo().GetField(FlxMouseControl.sortIndex).GetValue(item1))
+		Local value2:Float = UnboxFloat(item2.GetClassInfo().GetField(FlxMouseControl.sortIndex).GetValue(item2))
 
 		If (value1 < value2) Then
 			Return FlxMouseControl.sortOrder

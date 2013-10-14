@@ -3,11 +3,12 @@ Strict
 Import flixel
 
 Import flixel.plugin.photonstorm
+
 Import "../assets/sprites/player.png"
 Import "../assets/sprites/bullet.png"
 
 
-#REFLECTION_FILTER="weapon*|flixel.flx*|flixel.plugin*"
+#REFLECTION_FILTER = "weapon*"
 
 'import tests.TestsHeader;
 Function Main:Int()
@@ -18,7 +19,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(320, 256, GetClass("WeaponTest4"), 1, 60, 60)
+		Super.New(320, 256, GetClass("WeaponTest4"), 1, 60)
 		Print WeaponTest4.title
 		Print WeaponTest4.description
 		Print WeaponTest4.instructions		
@@ -70,7 +71,7 @@ Public
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		
 		'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
-		If (FlxG.GetPlugin(ClassInfo(FlxControl.ClassObject)) = Null) Then
+		If (FlxG.GetPlugin(FlxControl.__CLASS__) = Null) Then
 			FlxG.AddPlugin(New FlxControl())
 		Endif
 		
@@ -80,7 +81,7 @@ Public
 		FlxControl.player1.SetBounds(16, 200, 280, 16)
 		
 		'//	This is what fires the actual bullets (pressing SPACE) at a rate of 1 bullet per 250 ms, hooked to the lazer.fire method
-		FlxControl.player1.SetFireButton(KEY_SPACE, FlxControlHandler.KEYMODE_PRESSED, 250, lazer, ClassInfo(FlxWeapon.ClassObject).GetMethod("Fire",[]))
+		FlxControl.player1.SetFireButton(KEY_SPACE, FlxControlHandler.KEYMODE_PRESSED, 250, lazer, ClassInfo(FlxWeapon.__CLASS__).GetMethod("Fire",[]))
 
 		'//	The group which contains all of the bullets should be added so it is displayed
 		Add(lazer.group)
