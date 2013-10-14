@@ -3,10 +3,11 @@ Strict
 Import flixel
 
 Import flixel.plugin.photonstorm
+
 Import "../assets/sprites/ufo.png"
 Import "../assets/sprites/chunk.png"
 
-#REFLECTION_FILTER="weapon*|flixel.flx*|flixel.plugin*"
+#REFLECTION_FILTER = "weapon*"
 
 'import tests.TestsHeader;
 Function Main:Int()
@@ -17,7 +18,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(320, 256, GetClass("WeaponTest2"), 1, 60, 60)
+		Super.New(320, 256, GetClass("WeaponTest2"), 1, 60)
 		Print WeaponTest2.title
 		Print WeaponTest2.description
 		Print WeaponTest2.instructions			

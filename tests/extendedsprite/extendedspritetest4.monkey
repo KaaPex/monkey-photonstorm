@@ -1,5 +1,5 @@
 Strict
-#TEXT_FILES="*.txt|*.xml|*.json|*.csv"
+#TEXT_FILES = "*.csv"
 
 Import "../assets/sprites/ufo.png"
 Import "../assets/tiles/sci-fi-tiles.png"
@@ -9,7 +9,7 @@ Import flixel
 Import flixel.plugin.photonstorm.tests.controls.controltestscene1
 Import flixel.plugin.photonstorm
 
-#REFLECTION_FILTER="extendedsprite*|flixel.flx*|flixel.plugin*"
+#REFLECTION_FILTER = "extendedsprite*"
 
 'import tests.TestsHeader;
 Function Main:Int()
@@ -20,7 +20,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()		
-		Super.New(320, 256, GetClass("ExtendedSpriteTest4"), 1, 60, 60)
+		Super.New(320, 256, GetClass("ExtendedSpriteTest4"), 1, 60)
 		
 		Print ExtendedSpriteTest4.title
 		Print ExtendedSpriteTest4.description
@@ -60,7 +60,7 @@ Public
 		'//	Test specific
 		
 		'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
-		If (FlxG.GetPlugin(ClassInfo(FlxMouseControl.ClassObject)) = Null) Then
+		If (FlxG.GetPlugin(FlxMouseControl.__CLASS__) = Null) Then
 			FlxG.AddPlugin(New FlxMouseControl())
 		Endif
 		

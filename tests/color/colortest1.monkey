@@ -6,7 +6,7 @@ Import flixel
 Import flixel.plugin.photonstorm
 Import flixel.plugin.photonstorm.tests.testsheader
 
-#REFLECTION_FILTER="color*|flixel*"
+#REFLECTION_FILTER = "color*"
 
 'import tests.TestsHeader;
 Function Main:Int()
@@ -17,7 +17,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(320, 256, GetClass("ColorTest1"), 1, 60, 60)
+		Super.New(320, 256, GetClass("ColorTest1"), 1, 60)
 		Print ColorTest1.title
 		Print ColorTest1.description
 		Print ColorTest1.instructions	

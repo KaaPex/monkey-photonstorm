@@ -1,5 +1,5 @@
 Strict
-#TEXT_FILES="*.txt|*.xml|*.json|*.csv"
+#TEXT_FILES = "*.csv"
 
 Import "../assets/sprites/chick.png"
 Import "../assets/tiles/platformer_tiles.png"
@@ -10,7 +10,7 @@ Import flixel
 Import flixel.plugin.photonstorm
 Import controltestscene2
 
-#REFLECTION_FILTER="control*|flixel.flx*|flixel.plugin*"
+#REFLECTION_FILTER = "control**"
 
 'import tests.TestsHeader;
 Function Main:Int()
@@ -21,7 +21,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()		
-		Super.New(320, 288, GetClass("ControlTest2"), 1, 60, 60)
+		Super.New(320, 288, GetClass("ControlTest2"), 1, 60)
 		
 		Print ControlTest2.title
 		Print ControlTest2.description
@@ -77,7 +77,7 @@ Public
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		
 		'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
-		If (FlxG.GetPlugin(ClassInfo(FlxControl.ClassObject)) = Null) Then
+		If (FlxG.GetPlugin(FlxControl.__CLASS__) = Null) Then
 			FlxG.AddPlugin(New FlxControl())
 		Endif
 		

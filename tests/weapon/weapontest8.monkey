@@ -3,10 +3,11 @@ Strict
 Import flixel
 
 Import flixel.plugin.photonstorm
+
 Import "../assets/sprites/advanced_wars_tank.png"
 Import "../assets/sprites/advanced_wars_land.png"
 
-#REFLECTION_FILTER="weapon*|flixel.flx*|flixel.plugin*"
+#REFLECTION_FILTER = "weapon*"
 
 'import tests.TestsHeader;
 Function Main:Int()
@@ -17,7 +18,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(320, 256, GetClass("WeaponTest8"), 1, 60, 60)
+		Super.New(320, 256, GetClass("WeaponTest8"), 1, 60)
 		Print WeaponTest8.title
 		Print WeaponTest8.description
 		Print WeaponTest8.instructions		

@@ -3,9 +3,10 @@ Strict
 Import flixel
 
 Import flixel.plugin.photonstorm
+
 Import "../assets/sprites/asteroids_ship.png"
 
-#REFLECTION_FILTER="weapon*|flixel.flx*|flixel.plugin*"
+#REFLECTION_FILTER = "weapon*"
 
 'import tests.TestsHeader;
 Function Main:Int()
@@ -16,7 +17,7 @@ End Function
 Class Objects Extends FlxGame
 	
 	Method New()
-		Super.New(320, 256, GetClass("WeaponTest6"), 1, 60, 60)
+		Super.New(320, 256, GetClass("WeaponTest6"), 1, 60)
 		Print WeaponTest6.title
 		Print WeaponTest6.description
 		Print WeaponTest6.instructions		
@@ -65,7 +66,7 @@ Public
 		'//	The following are controls for the player, note that the "setFireButton" controls the speed at which bullets are fired, not the Weapon class itself
 		
 		'//	Enable the plugin - you only need do this once (unless you destroy the plugin)
-		If (FlxG.GetPlugin(ClassInfo(FlxControl.ClassObject)) = Null) Then
+		If (FlxG.GetPlugin(FlxControl.__CLASS__) = Null) Then
 			FlxG.AddPlugin(New FlxControl())
 		Endif
 		
@@ -79,7 +80,7 @@ Public
 		FlxControl.player1.SetThrust(KEY_UP, 100, KEY_DOWN, 50)
 		
 		'//	This is what fires the actual bullets (pressing SPACE) at a rate of 1 bullet per 250 ms, hooked to the lazer.fire method
-		FlxControl.player1.SetFireButton(KEY_CONTROL, FlxControlHandler.KEYMODE_PRESSED, 50, lazer, ClassInfo(FlxWeapon.ClassObject).GetMethod("FireFromParentAngle",[]))
+		FlxControl.player1.SetFireButton(KEY_CONTROL, FlxControlHandler.KEYMODE_PRESSED, 50, lazer, ClassInfo(FlxWeapon.__CLASS__).GetMethod("FireFromParentAngle",[]))
 
 		'//	The group which contains all of the bullets should be added so it is displayed
 		Add(lazer.group)
